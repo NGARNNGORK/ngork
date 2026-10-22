@@ -49,6 +49,23 @@ body {
     position: relative;
     z-index: 1
 }
+/* NGORK horizontal logo */
+.header-logo {
+    display: block;
+    width: 76px;
+    height: 46px;
+    object-fit: contain;
+    object-position: left center;
+    flex-shrink: 0;
+}
+
+.brand > span:last-child,
+.mobile-brand > span:last-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+}
 
 .brand-mark {
     width: 46px;
