@@ -55,8 +55,9 @@ body {
     width: 76px;
     height: 46px;
     object-fit: contain;
-    object-position: left center;
+    object-position: right center;
     flex-shrink: 0;
+    margin-right: -12px;
 }
 
 .brand > span:last-child,
