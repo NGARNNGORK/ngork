@@ -44,3 +44,283 @@ body{background:linear-gradient(135deg,#f5f6ff 0%,#f0f4ff 48%,#f8f7ff 100%);colo
 
 /* NGORK account controls */
 body.auth-checking .app-shell{visibility:hidden} .logout-btn{border:1px solid #dfe5f3;background:#fff;color:#5a6480;border-radius:10px;padding:8px 11px;font:600 11px 'IBM Plex Sans Thai',sans-serif} .logout-btn:hover{border-color:#bdb5ff;color:#5145d7} .logout-btn:disabled{opacity:.6;cursor:wait}@media(max-width:720px){.logout-btn{padding:7px 8px;font-size:10px}.top-actions{gap:6px}}
+
+/* ===== NGORK 2.1 — Depth & Detail ===== */
+
+/* พื้นหลังมีมิติ แต่คงโทนสีเดิม */
+body {
+    background:
+        radial-gradient(ellipse at 85% 5%, rgba(113, 87, 232, .09), transparent 32%),
+        radial-gradient(ellipse at 10% 55%, rgba(129, 140, 248, .07), transparent 35%),
+        linear-gradient(135deg, #f5f6ff 0%, #f0f3ff 55%, #faf9ff 100%);
+}
+
+/* Sidebar เพิ่มแสงและเงา */
+.sidebar {
+    box-shadow:
+        8px 0 30px rgba(28, 39, 80, .10),
+        inset -1px 0 rgba(255, 255, 255, .05);
+}
+
+.brand-mark {
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 8px 18px rgba(93, 77, 233, .30),
+        inset 0 1px 0 rgba(255, 255, 255, .35);
+}
+
+.brand-mark::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,.24),
+        transparent 55%
+    );
+    pointer-events: none;
+}
+
+.nav-item {
+    position: relative;
+    transition:
+        background .22s ease,
+        color .22s ease,
+        transform .22s ease,
+        box-shadow .22s ease;
+}
+
+.nav-item:hover {
+    transform: translateX(3px);
+}
+
+.nav-item.active {
+    box-shadow:
+        0 6px 18px rgba(81, 69, 229, .24),
+        inset 0 1px 0 rgba(255, 255, 255, .12);
+}
+
+/* หัวข้อ Dashboard ดูมีมิติมากขึ้น */
+.page-heading {
+    isolation: isolate;
+    box-shadow:
+        0 14px 32px rgba(85, 73, 231, .20),
+        0 3px 8px rgba(54, 41, 189, .08),
+        inset 0 1px 0 rgba(255, 255, 255, .22);
+}
+
+.page-heading::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 230px;
+    height: 230px;
+    right: 8%;
+    top: -145px;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 50%;
+    box-shadow:
+        0 0 0 24px rgba(255,255,255,.035),
+        0 0 0 50px rgba(255,255,255,.025);
+    pointer-events: none;
+}
+
+/* การ์ดสรุปงาน */
+.stat-card {
+    transition:
+        transform .22s ease,
+        box-shadow .22s ease,
+        border-color .22s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    border-color: #d5d9fa;
+    box-shadow:
+        0 16px 32px rgba(54, 65, 130, .10),
+        0 4px 10px rgba(54, 65, 130, .04);
+}
+
+.stat-icon {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.85);
+    transition: transform .22s ease;
+}
+
+.stat-card:hover .stat-icon {
+    transform: translateY(-2px) rotate(-4deg);
+}
+
+/* แผงข้อมูล */
+.panel {
+    position: relative;
+    transition:
+        box-shadow .22s ease,
+        border-color .22s ease;
+    box-shadow:
+        0 8px 24px rgba(54, 65, 130, .055),
+        0 2px 5px rgba(54, 65, 130, .025),
+        inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+.panel:hover {
+    border-color: #dce0f6;
+    box-shadow:
+        0 14px 34px rgba(54, 65, 130, .085),
+        0 3px 8px rgba(54, 65, 130, .035);
+}
+
+/* วงกลมความคืบหน้า */
+.progress-ring {
+    filter: drop-shadow(0 5px 9px rgba(81, 69, 229, .10));
+}
+
+.progress-ring::before {
+    box-shadow:
+        inset 0 1px 3px rgba(54, 65, 130, .05),
+        0 1px 2px rgba(54, 65, 130, .04);
+}
+
+.progress-track {
+    box-shadow: inset 0 1px 2px rgba(54, 65, 130, .07);
+}
+
+.progress-track div {
+    box-shadow: 0 0 8px rgba(81, 69, 229, .20);
+}
+
+/* แถวรายการการบ้าน */
+.focus-row,
+.task-row {
+    transition:
+        background .18s ease,
+        border-color .18s ease;
+}
+
+.focus-row:hover,
+.task-row:hover {
+    background: rgba(238, 236, 255, .65);
+}
+
+.task-check {
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+.task-check:hover {
+    border-color: #8175ed;
+    box-shadow: 0 0 0 3px rgba(81, 69, 229, .08);
+}
+
+/* ช่องค้นหาและตัวกรอง */
+.search-box,
+.filter-wrap select,
+.field-input {
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease,
+        background .18s ease;
+}
+
+.search-box:focus-within,
+.field-input:focus {
+    border-color: #9186f3;
+    box-shadow: 0 0 0 4px rgba(81, 69, 229, .10);
+}
+
+/* ปุ่มหลัก */
+.primary-btn {
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        filter .18s ease;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(81, 69, 229, .24);
+    filter: brightness(1.03);
+}
+
+.primary-btn:active {
+    transform: translateY(0) scale(.985);
+}
+
+.secondary-btn,
+.icon-btn {
+    transition:
+        background .18s ease,
+        border-color .18s ease,
+        color .18s ease,
+        transform .18s ease;
+}
+
+.secondary-btn:hover {
+    transform: translateY(-1px);
+}
+
+/* หน้าต่างเพิ่มการบ้าน */
+.modal {
+    box-shadow:
+        0 30px 90px rgba(24, 39, 71, .20),
+        0 8px 24px rgba(24, 39, 71, .08);
+    backdrop-filter: blur(12px);
+}
+
+/* การเคลื่อนไหวอย่างนุ่มนวล */
+@media (prefers-reduced-motion: no-preference) {
+    .stat-card,
+    .panel {
+        animation: ngork-enter .4s ease both;
+    }
+
+    .stat-card:nth-child(2) {
+        animation-delay: .04s;
+    }
+
+    .stat-card:nth-child(3) {
+        animation-delay: .08s;
+    }
+
+    .stat-card:nth-child(4) {
+        animation-delay: .12s;
+    }
+}
+
+@keyframes ngork-enter {
+    from {
+        opacity: .65;
+        transform: translateY(7px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* มือถือ: ลดเอฟเฟกต์ที่ไม่จำเป็น */
+@media (max-width: 720px) {
+    .stat-card:hover,
+    .nav-item:hover,
+    .primary-btn:hover {
+        transform: none;
+    }
+
+    .page-heading::before {
+        right: -100px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
