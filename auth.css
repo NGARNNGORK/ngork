@@ -43,11 +43,11 @@ body {
 .brand {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 0;
     color: white;
     text-decoration: none;
     position: relative;
-    z-index: 1
+    z-index: 1;
 }
 /* NGORK horizontal logo */
 .header-logo {
