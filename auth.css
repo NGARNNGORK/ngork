@@ -451,20 +451,22 @@ body {
     accent-color: var(--purple)
 }
 
+
 .submit-button {
     width: 100%;
     height: 48px;
     border: 0;
     border-radius: 12px;
-    background: linear-gradient(100deg, #5b4be7, #7868f2);
-    box-shadow: 0 9px 20px #6555eb30;
+    background: linear-gradient(100deg, var(--purple), var(--purple2));
+    box-shadow: 0 9px 20px #39866f30;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
     font: 700 13px 'IBM Plex Sans Thai', sans-serif;
-    transition: .18s
+    transition: .18s;
+    cursor: pointer;
 }
 
 .submit-button:hover {
