@@ -327,14 +327,11 @@ body {
 }
 
 .form-icon {
-    display: inline-grid;
-    place-items: center;
-    width: 48px;
-    height: 48px;
-    border-radius: 16px;
-    background: #efedff;
-    font-size: 23px;
-    margin-bottom: 15px
+    width: 42px;
+    height: 42px;
+    color: #75e5bb;
+    stroke-width: 1.8;
+    margin-bottom: 12px;
 }
 
 .form-heading .tiny-label {
