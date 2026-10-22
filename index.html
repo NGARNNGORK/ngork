@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111827">
+  <title>NGORK — งานงอกแค่ไหน ก็จัดการได้</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-checking">
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="NGORK หน้าหลัก">
+        <span class="brand-mark">N<span>↗</span></span>
+        <span><strong>NGORK</strong><small>STUDENT WORKSPACE</small></span>
+      </a>
+      <div class="side-label">เมนูหลัก</div>
+      <button class="nav-item active" data-view="dashboard"><span>▦</span> ภาพรวม</button>
+      <button class="nav-item" data-view="tasks"><span>✓</span> งานทั้งหมด <span class="nav-count" id="nav-task-count">0</span></button>
+      <button class="nav-item" data-view="upcoming"><span>◷</span> ใกล้ถึงกำหนด</button>
+      <div class="sidebar-bottom">
+        <div class="mini-card">
+          <div class="mini-icon">✦</div>
+          <strong>ค่อย ๆ ทำทีละงาน</strong>
+          <p>งานเยอะแค่ไหน ก็เริ่มจากงานแรกได้เสมอ</p>
+        </div>
+        <div class="profile"><div class="avatar">N</div><div><strong>พื้นที่ของฉัน</strong><small>นักเรียน / นักศึกษา</small></div><span class="online-dot"></span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobile-menu" aria-label="เปิดเมนู">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="breadcrumb-current">ภาพรวม</strong></div>
+        <div class="top-actions"><span class="local-status"><i></i> บันทึกในเครื่องนี้</span><button class="top-avatar" id="user-avatar" title="บัญชีผู้ใช้">N</button><button class="logout-btn" id="logout-button" type="button">ออกจากระบบ</button></div>
+      </header>
+
+      <section class="page-heading">
+        <div>
+          <p class="eyebrow" id="today-label">STUDENT WORKSPACE</p>
+          <h1 id="greeting">จัดการงานให้เป็นเรื่องง่าย<span>.</span></h1>
+          <p class="subtitle">งานงอกแค่ไหน ก็จัดการได้ — วางแผนวันนี้ แล้วค่อย ๆ ทำให้สำเร็จ</p>
+        </div>
+        <button class="primary-btn" id="open-add"><span>＋</span> เพิ่มงานใหม่</button>
+      </section>
+
+      <section class="stats-grid">
+        <article class="stat-card stat-total"><div class="stat-top"><span>งานทั้งหมด</span><span class="stat-icon">▤</span></div><div class="stat-value" id="total-stat">0</div><div class="stat-foot">งานที่อยู่ในรายการของคุณ</div></article>
+        <article class="stat-card"><div class="stat-top"><span>ยังไม่เสร็จ</span><span class="stat-icon orange">◷</span></div><div class="stat-value" id="pending-stat">0</div><div class="stat-foot">งานที่รอให้คุณลงมือ</div></article>
+        <article class="stat-card"><div class="stat-top"><span>เสร็จแล้ว</span><span class="stat-icon green">✓</span></div><div class="stat-value" id="done-stat">0</div><div class="stat-foot">ทุกความคืบหน้ามีความหมาย</div></article>
+        <article class="stat-card"><div class="stat-top"><span>เลยกำหนด</span><span class="stat-icon red">!</span></div><div class="stat-value" id="overdue-stat">0</div><div class="stat-foot">ลองจัดการงานเหล่านี้ก่อน</div></article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel progress-panel">
+          <div class="panel-heading"><div><p class="eyebrow">YOUR PROGRESS</p><h2>ความคืบหน้าของฉัน</h2></div><span class="round-icon">↗</span></div>
+          <div class="progress-main"><div class="progress-ring" id="progress-ring"><div><strong id="progress-number">0%</strong><small>เสร็จแล้ว</small></div></div><div class="progress-copy"><strong id="progress-title">เริ่มต้นจากงานแรกกัน!</strong><p id="progress-copy">เพิ่มงานที่ต้องทำ แล้วติดตามความคืบหน้าได้ที่นี่</p></div></div>
+          <div class="progress-track"><div id="progress-fill"></div></div>
+          <div class="progress-legend"><span><i class="legend-dot done-dot"></i>เสร็จแล้ว <b id="legend-done">0</b></span><span><i class="legend-dot pending-dot"></i>กำลังรอ <b id="legend-pending">0</b></span></div>
+        </article>
+
+        <article class="panel focus-panel">
+          <div class="panel-heading"><div><p class="eyebrow">UP NEXT</p><h2>งานที่ควรโฟกัส</h2></div><button class="text-btn" data-go="upcoming">ดูทั้งหมด ↗</button></div>
+          <div id="focus-list" class="focus-list"><div class="empty-state"><span>✦</span><strong>ยังไม่มีงานในรายการ</strong><p>เพิ่มงานแรกของคุณได้เลย</p></div></div>
+        </article>
+      </section>
+
+      <section class="panel tasks-panel">
+        <div class="panel-heading tasks-heading"><div><p class="eyebrow">TASK MANAGER</p><h2 id="list-title">รายการงานของฉัน</h2></div><button class="secondary-btn" id="add-from-list">＋ เพิ่มงาน</button></div>
+        <div class="toolbar"><label class="search-box"><span>⌕</span><input id="search-input" type="search" placeholder="ค้นหาชื่องาน..."></label><div class="filter-wrap"><span>สถานะ</span><select id="status-filter"><option value="all">ทั้งหมด</option><option value="pending">ยังไม่เสร็จ</option><option value="done">เสร็จแล้ว</option><option value="overdue">เลยกำหนด</option></select></div><div class="filter-wrap"><span>เรียงตาม</span><select id="sort-filter"><option value="date">วันกำหนดส่ง</option><option value="newest">เพิ่มล่าสุด</option><option value="title">ชื่อ A–Z</option></select></div></div>
+        <div class="task-table-head"><span>ชื่องาน</span><span>กำหนดส่ง</span><span>สถานะ</span><span>จัดการ</span></div>
+        <div id="task-list" class="task-list"></div>
+        <div id="list-footer" class="list-footer">แสดงงานทั้งหมด 0 รายการ</div>
+      </section>
+      <footer class="footer"><span>© 2026 NGORK</span><span>จัดการงานทีละนิด ชีวิตก็เบาขึ้น <b>✦</b></span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modal-backdrop" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-heading"><div><p class="eyebrow">NEW TASK</p><h2 id="modal-title">เพิ่มงานใหม่</h2></div><button class="close-btn" id="close-modal" aria-label="ปิด">×</button></div>
+      <form id="task-form">
+        <label class="field-label" for="task-title">ชื่องาน <span>*</span></label>
+        <input class="field-input" id="task-title" maxlength="120" placeholder="เช่น ส่งรายงานวิชาคณิตศาสตร์" required>
+        <div class="form-row"><div><label class="field-label" for="task-date">วันกำหนดส่ง <span>*</span></label><input class="field-input" type="date" id="task-date" required></div><div><label class="field-label" for="task-subject">วิชา / หมวดหมู่</label><input class="field-input" id="task-subject" maxlength="50" placeholder="เช่น คณิตศาสตร์"></div></div>
+        <label class="field-label" for="task-note">รายละเอียดเพิ่มเติม</label><textarea class="field-input" id="task-note" rows="3" maxlength="500" placeholder="จดสิ่งที่ต้องทำหรือสิ่งที่ต้องเตรียม..."></textarea>
+        <div class="modal-actions"><button type="button" class="secondary-btn" id="cancel-modal">ยกเลิก</button><button type="submit" class="primary-btn">บันทึกงาน <span>→</span></button></div>
+      </form>
+    </section>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script type="module" src="script.js"></script>
+  <script type="module" src="auth-guard.js"></script>
+</body>
+</html>
