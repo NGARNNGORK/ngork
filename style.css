@@ -758,3 +758,59 @@ body {
     transition-duration: .01ms !important;
   }
 }
+
+/* FIX: NGORK Add Task Modal */
+#modal-backdrop {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 99999 !important;
+    display: flex;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 20px !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+}
+
+#modal-backdrop[hidden] {
+    display: none !important;
+}
+
+#modal-backdrop .modal {
+    position: relative !important;
+    margin: auto !important;
+    width: min(100%, 560px) !important;
+    max-height: calc(100vh - 40px) !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+}
+
+#modal-backdrop .modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#modal-backdrop .modal input,
+#modal-backdrop .modal textarea,
+#modal-backdrop .modal select {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+#modal-backdrop .modal button {
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 600px) {
+    #modal-backdrop {
+        padding: 12px !important;
+    }
+
+    #modal-backdrop .modal {
+        max-height: calc(100vh - 24px) !important;
+    }
+}
