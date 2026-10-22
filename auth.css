@@ -629,6 +629,11 @@ body {
         gap: 10px;
         margin: 8px 0 25px
     }
+    .mobile-brand .header-logo {
+    width: 65px;
+    height: 41px;
+    object-position: left center;
+}
 
     .mobile-brand .brand-mark {
         width: 41px;
