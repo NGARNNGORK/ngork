@@ -477,3 +477,284 @@ textarea:focus-visible {
       0 8px 18px rgba(62, 53, 145, .055);
   }
 }
+
+/* ==========================================
+   NGORK 3D MOTION — LAVENDER EDITION
+   Append to the end of style.css
+   ========================================== */
+
+:root {
+  --ng-3d-purple: #7655f5;
+  --ng-3d-blue: #80b8ff;
+  --ng-3d-pink: #f1b4f3;
+  --ng-3d-shadow:
+    0 4px 8px rgba(67, 48, 150, .04),
+    0 14px 30px rgba(92, 72, 190, .09),
+    0 30px 60px rgba(92, 72, 190, .07);
+}
+
+/* Animated ambient background */
+body {
+  background:
+    radial-gradient(ellipse at 8% 8%, #e6ddff 0, transparent 30%),
+    radial-gradient(ellipse at 92% 22%, #e0eaff 0, transparent 28%),
+    radial-gradient(ellipse at 70% 85%, #f2e2ff 0, transparent 32%),
+    linear-gradient(135deg, #f8f6ff, #f0f2ff 52%, #fbf8ff);
+  background-attachment: fixed;
+}
+
+.app-shell {
+  position: relative;
+  isolation: isolate;
+}
+
+.main-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Brand: dimensional 3D object */
+.brand-mark {
+  transform-style: preserve-3d;
+  transition: transform .35s cubic-bezier(.2,.8,.2,1),
+              box-shadow .35s ease;
+}
+
+.brand:hover .brand-mark {
+  transform: perspective(500px) rotateY(-12deg) rotateX(7deg)
+             translateY(-3px);
+  box-shadow:
+    0 7px 0 #4034bd,
+    0 17px 28px rgba(92, 73, 225, .38);
+}
+
+/* Hero panel: layered light and depth */
+.page-heading {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  box-shadow:
+    0 5px 0 #4134c3,
+    0 13px 25px rgba(76, 61, 204, .19),
+    0 28px 55px rgba(76, 61, 204, .12),
+    inset 0 1px rgba(255,255,255,.4);
+}
+
+.page-heading::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 220px;
+  height: 220px;
+  right: 8%;
+  top: -145px;
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 20px rgba(255,255,255,.045),
+    0 0 0 44px rgba(255,255,255,.035),
+    0 0 0 72px rgba(255,255,255,.025);
+  animation: ngork-orbit 16s linear infinite;
+  pointer-events: none;
+}
+
+.page-heading::after {
+  animation: ngork-glow 7s ease-in-out infinite alternate;
+}
+
+/* Floating stat cards */
+.stat-card {
+  transform-style: preserve-3d;
+  box-shadow: var(--ng-3d-shadow);
+  transition:
+    transform .35s cubic-bezier(.2,.8,.2,1),
+    box-shadow .35s ease,
+    border-color .3s ease;
+}
+
+.stat-card:nth-child(2) {
+  animation: ngork-float 6s ease-in-out infinite;
+  animation-delay: -.8s;
+}
+
+.stat-card:nth-child(3) {
+  animation: ngork-float 6s ease-in-out infinite;
+  animation-delay: -2s;
+}
+
+.stat-card:nth-child(4) {
+  animation: ngork-float 6s ease-in-out infinite;
+  animation-delay: -3.2s;
+}
+
+.stat-card:hover {
+  transform: perspective(900px) translateY(-8px)
+             rotateX(2deg) rotateY(-2deg);
+  box-shadow:
+    0 7px 12px rgba(67,48,150,.05),
+    0 22px 42px rgba(92,72,190,.15),
+    0 36px 65px rgba(92,72,190,.08);
+  border-color: #c9baff;
+}
+
+.stat-icon {
+  transform: translateZ(14px);
+  transition: transform .35s ease;
+}
+
+.stat-card:hover .stat-icon {
+  transform: translateZ(24px) rotate(-8deg) scale(1.08);
+}
+
+/* Glassy dimensional panels */
+.panel {
+  transform-style: preserve-3d;
+  box-shadow: var(--ng-3d-shadow);
+  transition:
+    box-shadow .35s ease,
+    border-color .35s ease,
+    transform .35s ease;
+}
+
+.panel:hover {
+  border-color: rgba(167,155,255,.6);
+  box-shadow:
+    0 5px 10px rgba(48,40,120,.04),
+    0 18px 38px rgba(62,53,145,.11),
+    0 32px 55px rgba(62,53,145,.045);
+}
+
+.panel-heading .round-icon {
+  transition: transform .35s cubic-bezier(.2,.8,.2,1);
+}
+
+.panel:hover .round-icon {
+  transform: translateY(-3px) rotate(8deg) scale(1.05);
+}
+
+/* Progress ring: subtle luminous effect */
+.progress-ring {
+  animation: ngork-ring-glow 4s ease-in-out infinite;
+}
+
+.progress-track {
+  overflow: hidden;
+}
+
+.progress-track div {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-track div::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255,255,255,.55) 48%,
+    transparent 75%
+  );
+  transform: translateX(-100%);
+  animation: ngork-shimmer 3.5s ease-in-out infinite;
+}
+
+/* Raised buttons */
+.primary-btn,
+.secondary-btn {
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    filter .22s ease;
+}
+
+.primary-btn:hover {
+  filter: brightness(1.06);
+  transform: translateY(-3px);
+  box-shadow:
+    0 6px 0 #392cb6,
+    0 14px 25px rgba(79,70,229,.25);
+}
+
+.secondary-btn:hover {
+  transform: translateY(-2px);
+}
+
+.primary-btn:active,
+.secondary-btn:active {
+  transform: translateY(1px);
+}
+
+/* Task rows appear interactive */
+.focus-row,
+.task-row {
+  transition:
+    transform .22s ease,
+    background .22s ease,
+    box-shadow .22s ease;
+}
+
+.focus-row:hover {
+  transform: translateX(4px);
+  box-shadow: 0 5px 14px rgba(79,70,229,.07);
+}
+
+.task-row:hover {
+  transform: translateX(2px);
+}
+
+/* Smooth entrance */
+@keyframes ngork-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes ngork-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ngork-glow {
+  from { opacity: .55; }
+  to { opacity: 1; }
+}
+
+@keyframes ngork-ring-glow {
+  0%, 100% { filter: drop-shadow(0 4px 7px rgba(79,70,229,.1)); }
+  50% { filter: drop-shadow(0 7px 14px rgba(79,70,229,.23)); }
+}
+
+@keyframes ngork-shimmer {
+  0%, 65% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Mobile: avoid unnecessary movement */
+@media (max-width: 720px) {
+  .stat-card:nth-child(n) {
+    animation: none;
+  }
+
+  .stat-card:hover,
+  .panel:hover,
+  .task-row:hover {
+    transform: none;
+  }
+
+  .page-heading::before {
+    right: -100px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
