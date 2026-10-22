@@ -891,36 +891,3 @@ body {
         border-radius: 18px !important;
     }
 }
-
-/* FIX: Close button position in Add Task Modal */
-#modal-backdrop .modal {
-    position: relative !important;
-    padding-top: 64px !important;
-}
-
-#modal-backdrop .modal #close-modal {
-    position: absolute !important;
-    top: 16px !important;
-    right: 16px !important;
-    left: auto !important;
-    bottom: auto !important;
-    z-index: 20 !important;
-    width: 36px !important;
-    min-width: 36px !important;
-    height: 36px !important;
-    min-height: 36px !important;
-    padding: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    border-radius: 50% !important;
-    background: #eee7ff !important;
-    color: #6545a5 !important;
-    border: 1px solid #d9ccf6 !important;
-    box-shadow: none !important;
-}
-
-#modal-backdrop .modal #close-modal:hover {
-    background: #ded0ff !important;
-    transform: scale(1.05);
-}
