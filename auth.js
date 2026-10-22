@@ -117,7 +117,7 @@ form.addEventListener("submit", async (event) => {
       setBusy(true, "กำลังเข้าสู่ระบบ...");
       await signInWithEmailAndPassword(auth, email, password);
     }
-    window.location.replace("index.html");
+    window.location.replace("dashboard.html");
   } catch (error) {
     showMessage(error.message?.startsWith("ยังไม่ได้ตั้งค่า") || error.message?.startsWith("ยังเชื่อมต่อ") ? error.message : friendlyError(error));
     setBusy(false);
@@ -130,7 +130,7 @@ googleButton.addEventListener("click", async () => {
     if (!auth) throw new Error("ยังเชื่อมต่อ Firebase ไม่สำเร็จ");
     setBusy(true, "กำลังเข้าสู่ระบบ...");
     await signInWithPopup(auth, googleProvider);
-    window.location.replace("index.html");
+    window.location.replace("dashboard.html");
   } catch (error) {
     showMessage(error.message?.startsWith("ยังไม่ได้ตั้งค่า") || error.message?.startsWith("ยังเชื่อมต่อ") ? error.message : friendlyError(error));
     setBusy(false);
@@ -151,7 +151,7 @@ try {
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      window.location.replace("index.html");
+      window.location.replace("dashboard.html");
     }
   });
 } catch (error) {
