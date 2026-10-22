@@ -43,11 +43,11 @@ body {
 .brand {
     display: flex;
     align-items: center;
-    gap: 0;
+    gap: px;
     color: white;
     text-decoration: none;
     position: relative;
-    z-index: 1;
+    z-index: 1
 }
 /* NGORK horizontal logo */
 .header-logo {
@@ -55,9 +55,8 @@ body {
     width: 76px;
     height: 46px;
     object-fit: contain;
-    object-position: right center;
+    object-position: left center;
     flex-shrink: 0;
-    margin-right: -12px;
 }
 
 .brand > span:last-child,
@@ -92,17 +91,17 @@ body {
 .brand b,
 .mobile-brand b {
     display: block;
-    font: 800 23px Manrope, sans-serif;
-    letter-spacing: 1px;
+    font: 800 19px Manrope, sans-serif;
+    letter-spacing: 1.2px
 }
 
 .brand small,
 .mobile-brand small {
     display: block;
-    font: 600 10px Manrope, sans-serif;
-    letter-spacing: 1px;
+    font: 600 9px Manrope, sans-serif;
+    letter-spacing: 1.6px;
     color: #b4c0e7;
-    margin-top: 2px;
+    margin-top: 3px
 }
 
 .welcome-copy {
