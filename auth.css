@@ -43,7 +43,7 @@ body {
 .brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 5px;
     color: white;
     text-decoration: none;
     position: relative;
