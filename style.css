@@ -814,3 +814,80 @@ body {
         max-height: calc(100vh - 24px) !important;
     }
 }
+
+/* NGORK — Premium Add Task Modal */
+#modal-backdrop {
+    background: rgba(24, 18, 48, 0.72) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+}
+
+#modal-backdrop .modal {
+    background: linear-gradient(
+        145deg,
+        #ffffff 0%,
+        #f8f5ff 100%
+    ) !important;
+    color: #292344 !important;
+    border: 1px solid rgba(255, 255, 255, 0.95) !important;
+    border-radius: 24px !important;
+    padding: 28px !important;
+    box-shadow:
+        0 24px 70px rgba(23, 12, 55, 0.35),
+        0 8px 20px rgba(116, 86, 190, 0.15) !important;
+}
+
+#modal-backdrop .modal h2,
+#modal-backdrop .modal h3,
+#modal-backdrop .modal label {
+    color: #30254f !important;
+    font-weight: 700;
+}
+
+#modal-backdrop .modal input,
+#modal-backdrop .modal textarea,
+#modal-backdrop .modal select {
+    background: #ffffff !important;
+    color: #292344 !important;
+    border: 1px solid #ded5f5 !important;
+    border-radius: 12px !important;
+    padding: 12px 14px !important;
+    min-height: 44px;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(70, 48, 120, 0.04);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#modal-backdrop .modal textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+#modal-backdrop .modal input:focus,
+#modal-backdrop .modal textarea:focus,
+#modal-backdrop .modal select:focus {
+    border-color: #9570e8 !important;
+    box-shadow: 0 0 0 4px rgba(149, 112, 232, 0.15) !important;
+}
+
+#modal-backdrop .modal input::placeholder,
+#modal-backdrop .modal textarea::placeholder {
+    color: #a49bb8 !important;
+}
+
+#modal-backdrop .modal button {
+    border-radius: 12px !important;
+    font-weight: 700;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#modal-backdrop .modal button:hover {
+    transform: translateY(-2px);
+}
+
+@media (max-width: 600px) {
+    #modal-backdrop .modal {
+        padding: 20px !important;
+        border-radius: 18px !important;
+    }
+}
