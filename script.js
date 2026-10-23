@@ -530,7 +530,9 @@
 
 // นำ URL Web App ของ Apps Script มาใส่ระหว่างเครื่องหมายคำพูด
 
+
 const NGORK_AI_API_URL = "https://script.google.com/macros/s/AKfycbzK5tZF-sOOBLHZ0K9n7c1hA7oKDcd0jwJcx-Iyok2d63T9ehZJ0HyTpmgtSUA64ks6/exec";
+
 
 
 const aiToggle = document.getElementById("ngork-ai-toggle");
