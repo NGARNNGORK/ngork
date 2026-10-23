@@ -1807,3 +1807,25 @@ textarea::placeholder {
     width: 100%;
   }
 }
+
+/* แก้ลิงก์เมนูหลัก */
+.sidebar a.nav-item,
+.sidebar a.nav-item:link,
+.sidebar a.nav-item:visited,
+.sidebar a.nav-item:hover,
+.sidebar a.nav-item:active {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+.sidebar a.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sidebar a.nav-item.active {
+  text-decoration: none !important;
+}
