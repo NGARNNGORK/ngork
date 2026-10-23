@@ -1444,3 +1444,12 @@ textarea::placeholder {
     min-width: 0;
   }
 }
+
+/* สีข้อความทักทายบน Dashboard */
+#greeting {
+  color: #7652f5 !important;
+}
+
+#greeting span {
+  color: #7652f5 !important;
+}
