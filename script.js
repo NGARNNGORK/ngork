@@ -557,56 +557,70 @@ if (aiToggle && aiPanel && aiClose && aiForm &&
     return element;
   }
 
-  aiForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
+ 
+aiForm.addEventListener("submit", (event) => {
+  event.preventDefault();
 
-    const message = aiInput.value.trim();
-    if (!message || aiSend.disabled) return;
+  const message = aiInput.value.trim();
+  if (!message || aiSend.disabled) return;
 
-    addAIMessage(message, "user");
-    aiInput.value = "";
-    aiSend.disabled = true;
-    aiInput.disabled = true;
+  addAIMessage(message, "user");
+  aiInput.value = "";
+  aiSend.disabled = true;
+  aiInput.disabled = true;
 
-    const loadingMessage = addAIMessage(
-      "กำลังคิดคำตอบให้ครับ…",
-      "assistant"
-    );
+  const loadingMessage = addAIMessage(
+    "กำลังคิดคำตอบให้ครับ…",
+    "assistant"
+  );
 
-    try {
-      const response = await fetch(NGORK_AI_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify({ message }),
-        signal: AbortSignal.timeout(60000)
-      });
+  const callbackName =
+    "ngorkCallback_" +
+    Date.now() +
+    "_" +
+    Math.random().toString(36).slice(2);
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
+  const script = document.createElement("script");
+  let finished = false;
 
-      const data = await response.json();
+  const timeout = setTimeout(() => {
+    finish("AI ใช้เวลานานเกินไปครับ ลองส่งใหม่อีกครั้ง");
+  }, 60000);
 
-      if (!data.success || typeof data.answer !== "string") {
-        throw new Error(data.error || "Backend ไม่ได้ส่งคำตอบกลับ");
-      }
+  function finish(text) {
+    if (finished) return;
+    finished = true;
 
-      loadingMessage.textContent = data.answer;
+    clearTimeout(timeout);
+    delete window[callbackName];
+    script.remove();
 
-    } catch (error) {
-      console.error("NGORK AI error:", error);
+    loadingMessage.textContent = text;
+    aiSend.disabled = false;
+    aiInput.disabled = false;
+    aiInput.focus();
+  }
 
-      loadingMessage.textContent =
-        error.name === "TimeoutError"
-          ? "AI ใช้เวลานานเกินไปครับ ลองส่งใหม่อีกครั้ง"
-          : "เชื่อมต่อ AI ไม่สำเร็จครับ กรุณาตรวจสอบ Console";
-
-    } finally {
-      aiSend.disabled = false;
-      aiInput.disabled = false;
-      aiInput.focus();
+  window[callbackName] = (data) => {
+    if (data && data.success && typeof data.answer === "string") {
+      finish(data.answer);
+    } else {
+      finish(
+        "AI ตอบกลับไม่สำเร็จ: " +
+        (data?.error || "ไม่ทราบสาเหตุ")
+      );
     }
+  };
+
+  script.onerror = () => {
+    finish("เชื่อมต่อ NGORK AI ไม่สำเร็จ กรุณาตรวจสอบ Backend");
+  };
+
+  const params = new URLSearchParams({
+    callback: callbackName,
+    message: message
   });
-}
+
+  script.src = NGORK_AI_API_URL + "?" + params.toString();
+  document.body.appendChild(script);
+});
