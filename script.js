@@ -394,8 +394,3 @@ window.addEventListener("ngork-user-ready", (event) => {
 
   initializeUserTasks(uid);
 });
-document.querySelectorAll(".nav-item[data-view]").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    setView(btn.dataset.view);
-  });
-});
