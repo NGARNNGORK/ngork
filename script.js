@@ -571,7 +571,9 @@ if (aiToggle && aiPanel && aiClose && aiForm &&
     const message = aiInput.value.trim();
     if (!message || aiSend.disabled) return;
 
-    if (!NGORK_AI_API_URL.startsWith("https://script.google.com/")) {
+    
+if (!NGORK_AI_API_URL.startsWith("https://script.google.com/")) {
+
       addAIMessage(
         "กรุณาใส่ URL ของ Apps Script Web App ในตัวแปร NGORK_AI_API_URL ก่อนครับ",
         "assistant"
