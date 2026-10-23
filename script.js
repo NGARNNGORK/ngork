@@ -528,9 +528,7 @@
    NGORK AI - Gemini Chat
    ========================= */
 
-const NGORK_AI_API_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnSy_F4-Gt6d8oPKWO9lj_ayTh_KdTxkaTNLzQZVLk1I2w16Ryv5M4A_tfUxK8LRjLb2GfLRpCV0nUNPMbFBdNOKfa6peSSrK4Y2a76X2NMzaqulhSFkWePRAnRQ2EebZn1HvkA9QaUL-mxtPyE9UtbQ_Ef5vdFZ1k2UNmqSzDnMWI3d2GDWPB4RGEyk8CELh1ztrjgTtL5284hFDsoV34AwhgNUKkEJTi0CJQ94wwKxAzuZ4Fqvul-l7-BtEBNZQ-F9ff0oTTq4Kp2w4Z1fjBox-qgiZg&lib=Mpn4VQ1gT2fPS57lJ6jHOo47jsC_wdrP5";
-
-const aiToggle = document.getElementById("ngork-ai-toggle");
+const NGORK_AI_API_URL = "https://script.google.com/macros/s/AKfycbzK5tZF-sOOBLHZ0K9n7c1hA7oKDcd0jwJcx-Iyok2d63T9ehZJ0HyTpmgtSUA64ks6/exec";
 const aiPanel = document.getElementById("ngork-ai-panel");
 const aiClose = document.getElementById("ngork-ai-close");
 const aiForm = document.getElementById("ngork-ai-form");
