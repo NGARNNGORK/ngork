@@ -1445,11 +1445,11 @@ textarea::placeholder {
   }
 }
 
-/* สีข้อความทักทายบน Dashboard */
 #greeting {
-  color: #7652f5 !important;
+  color: #25234a !important;
+  font-weight: 800;
 }
 
 #greeting span {
-  color: #7652f5 !important;
+  color: #25234a !important;
 }
