@@ -277,7 +277,9 @@ function renderFocus() {
     <div class="focus-row">
       <input class="task-check" type="checkbox" data-toggle="${task.id}" aria-label="ทำ ${escapeHTML(task.title)} ให้เสร็จ">
       <div class="focus-name"><strong>${escapeHTML(task.title)}</strong><small>${escapeHTML(task.subject || "งานทั่วไป")} · ${prettyDate(task.date)}</small></div>
-      <span class="date-chip">${escapeHTML(taskDueText(task))}</span>
+      <span class="date-chip">
+  ${escapeHTML(getSmartPriority(task).label)}
+</span>
     </div>`).join("");
 }
 function renderList() {
