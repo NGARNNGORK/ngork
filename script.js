@@ -256,34 +256,57 @@ function getSmartPriority(task) {
 }
 
 
+
 function renderFocus() {
   const list = tasks
-  .filter(task => !task.done)
-  .sort((a, b) => {
-    const priorityA = getSmartPriority(a).score;
-    const priorityB = getSmartPriority(b).score;
+    .filter(task => !task.done)
+    .sort((a, b) => {
+      const priorityA = getSmartPriority(a).score;
+      const priorityB = getSmartPriority(b).score;
 
-    if (priorityA !== priorityB) {
-      return priorityB - priorityA;
-    }
+      if (priorityA !== priorityB) {
+        return priorityB - priorityA;
+      }
 
-    return a.date.localeCompare(b.date);
-  })
-  .slice(0, 4);
+      return a.date.localeCompare(b.date);
+    })
+    .slice(0, 4);
+
   const root = $("#focus-list");
+
   if (!list.length) {
-    root.innerHTML = `<div class="empty-state"><span>✦</span><strong>${tasks.length ? "ไม่มีงานค้างแล้ว เยี่ยมมาก!" : "ยังไม่มีงานในรายการ"}</strong><p>${tasks.length ? "พักสักหน่อย แล้วค่อยเริ่มงานใหม่" : "เพิ่มงานแรกของคุณได้เลย"}</p></div>`;
+    root.innerHTML = `
+      <div class="empty-state">
+        <span>✦</span>
+        <strong>${tasks.length ? "ไม่มีงานค้างแล้ว เยี่ยมมาก!" : "ยังไม่มีงานในรายการ"}</strong>
+        <p>${tasks.length ? "พักสักหน่อย แล้วค่อยเริ่มงานใหม่" : "เพิ่มงานแรกของคุณได้เลย"}</p>
+      </div>`;
     return;
   }
-  root.innerHTML = list.map(task => `
-    <div class="focus-row">
-      <input class="task-check" type="checkbox" data-toggle="${task.id}" aria-label="ทำ ${escapeHTML(task.title)} ให้เสร็จ">
-      <div class="focus-name"><strong>${escapeHTML(task.title)}</strong><small>${escapeHTML(task.subject || "งานทั่วไป")} · ${prettyDate(task.date)}</small></div>
-      <span class="date-chip">
-  ${escapeHTML(getSmartPriority(task).label)}
-</span>
-    </div>`).join("");
+
+  root.innerHTML = list.map(task => {
+    const priority = getSmartPriority(task);
+
+    return `
+      <div class="focus-row">
+        <input
+          class="task-check"
+          type="checkbox"
+          data-toggle="${task.id}"
+          aria-label="ทำ ${escapeHTML(task.title)} ให้เสร็จ"
+        >
+        <div class="focus-name">
+          <strong>${escapeHTML(task.title)}</strong>
+          <small>
+            ${escapeHTML(task.subject || "งานทั่วไป")} · ${prettyDate(task.date)}
+          </small>
+          <small>${escapeHTML(priority.reason)}</small>
+        </div>
+        <span class="date-chip">${escapeHTML(priority.label)}</span>
+      </div>`;
+  }).join("");
 }
+
 function renderList() {
   const root = $("#task-list");
   const list = getVisibleTasks();
