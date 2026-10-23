@@ -66,6 +66,11 @@ function makeAvatar(container, photo, name) {
 
 function renderProfile() {
   const displayName = currentName || "นักเรียน";
+  const greeting = document.querySelector("#greeting");
+
+if (greeting && greeting.textContent.startsWith("สวัสดี,")) {
+  greeting.textContent = `สวัสดี, ${displayName} ✦`;
+}
 
   // รูปที่มุมขวาบนและมุมล่างซ้าย
   makeAvatar($("#user-avatar"), profilePhoto, displayName);
@@ -266,9 +271,13 @@ form?.addEventListener("submit", async (event) => {
       displayName: newName
     });
 
-    currentName = newName;
-    profilePhoto = selectedPhoto;
-    selectedPhoto = "";
+   currentName = newName;
+profilePhoto = selectedPhoto;
+selectedPhoto = "";
+
+if ($("#greeting")) {
+  $("#greeting").textContent = `สวัสดี, ${currentName} ✦`;
+}
 
     renderProfile();
     closeEditor();

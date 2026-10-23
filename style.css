@@ -1984,3 +1984,52 @@ textarea::placeholder {
   border-radius: 12px;
   cursor: pointer;
 }
+
+/* รูปโปรไฟล์บน Dashboard */
+.profile-photo-button {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.profile-photo-button .profile-photo,
+.profile-photo-button img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+
+/* รูปในเมนูและตัวอย่างรูป */
+.profile-popover-avatar,
+.profile-editor-avatar {
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.profile-popover-avatar img,
+.profile-editor-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+}
+
+.profile-modal .modal-heading .close-btn {
+  transform: translateY(-30px);
+}

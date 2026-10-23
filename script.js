@@ -244,7 +244,17 @@ function setView(view) {
   contentGrid.style.display = "";
   tasksPanel.style.display = "none";
 
-  $("#greeting").innerHTML = "สวัสดี, Sirawut ✦";
+const accountName =
+  document.getElementById("popover-name")?.textContent?.trim();
+
+$("#greeting").textContent =
+  `สวัสดี, ${
+    accountName && accountName !== "พื้นที่ของฉัน"
+      ? accountName
+      : "นักเรียน"
+  } ✦`;
+
+$("#greeting").textContent = `สวัสดี, ${accountName} ✦`;
 } else {
   statsGrid.style.display = "none";
   contentGrid.style.display = "none";
@@ -394,3 +404,10 @@ window.addEventListener("ngork-user-ready", (event) => {
 
   initializeUserTasks(uid);
 });
+window.addEventListener("ngork-user-ready", (event) => {
+  const uid = event.detail?.uid;
+  if (!uid) return;
+
+  initializeUserTasks(uid);
+});
+setView("dashboard");
