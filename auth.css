@@ -1081,3 +1081,80 @@ body {
     transition: none !important;
   }
 }
+
+/* NGORK: ปรับหน้าเข้าสู่ระบบเป็นธีมสีม่วง */
+:root {
+  --auth-purple: #7652f5;
+  --auth-purple-dark: #6040e8;
+  --auth-purple-light: #eee9ff;
+}
+
+/* ป้องกันเนื้อหาตกขอบ */
+.auth-layout {
+  min-height: 100vh;
+  height: auto;
+  overflow: hidden;
+}
+
+/* ขยายพื้นที่ฝั่งฟอร์ม */
+.form-side {
+  min-width: 0;
+  padding: 40px clamp(24px, 5vw, 72px);
+  box-sizing: border-box;
+}
+
+/* ขยายการ์ด Login */
+.auth-card {
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+/* เปลี่ยนปุ่มหลักเป็นสีม่วง */
+.submit-button {
+  background: linear-gradient(135deg, #8968ff, #6040e8) !important;
+  color: #fff !important;
+  box-shadow: 0 10px 24px rgba(118, 82, 245, 0.2);
+}
+
+.submit-button:hover {
+  background: linear-gradient(135deg, #7652f5, #5030d5) !important;
+}
+
+/* เปลี่ยนสีแท็บที่เลือก */
+.tab.active {
+  color: #fff !important;
+  background: linear-gradient(135deg, #8968ff, #6040e8) !important;
+}
+
+/* เปลี่ยนสีข้อความและไอคอน */
+.link-button,
+.form-heading .tiny-label,
+.form-icon {
+  color: #7652f5 !important;
+}
+
+/* ช่องกรอกข้อมูล */
+.input-wrap:focus-within {
+  border-color: #8968ff;
+  box-shadow: 0 0 0 3px rgba(118, 82, 245, 0.12);
+}
+
+/* ปรับหน้าจอมือถือ */
+@media (max-width: 768px) {
+  .auth-layout {
+    min-height: 100vh;
+    height: auto;
+    overflow: visible;
+  }
+
+  .form-side {
+    width: 100%;
+    padding: 24px 16px;
+  }
+
+  .auth-card {
+    max-width: 560px;
+  }
+}
