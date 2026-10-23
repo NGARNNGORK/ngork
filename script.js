@@ -528,12 +528,7 @@
    NGORK AI - Gemini Chat
    ========================= */
 
-// นำ URL Web App ของ Apps Script มาใส่ระหว่างเครื่องหมายคำพูด
-
-
 const NGORK_AI_API_URL = "https://script.google.com/macros/s/AKfycbzK5tZF-sOOBLHZ0K9n7c1hA7oKDcd0jwJcx-Iyok2d63T9ehZJ0HyTpmgtSUA64ks6/exec";
-
-
 
 const aiToggle = document.getElementById("ngork-ai-toggle");
 const aiPanel = document.getElementById("ngork-ai-panel");
@@ -556,13 +551,12 @@ if (aiToggle && aiPanel && aiClose && aiForm &&
   });
 
   function addAIMessage(text, sender) {
-    const message = document.createElement("div");
-    message.className = `ngork-ai-message ${sender}`;
-    // ใช้ textContent เพื่อไม่ให้ข้อความถูกตีความเป็น HTML
-    message.textContent = text;
-    aiMessages.appendChild(message);
+    const element = document.createElement("div");
+    element.className = `ngork-ai-message ${sender}`;
+    element.textContent = text;
+    aiMessages.appendChild(element);
     aiMessages.scrollTop = aiMessages.scrollHeight;
-    return message;
+    return element;
   }
 
   aiForm.addEventListener("submit", async (event) => {
@@ -571,60 +565,25 @@ if (aiToggle && aiPanel && aiClose && aiForm &&
     const message = aiInput.value.trim();
     if (!message || aiSend.disabled) return;
 
-    
-if (!NGORK_AI_API_URL.startsWith("https://script.google.com/")) {
-
-      addAIMessage(
-        "กรุณาใส่ URL ของ Apps Script Web App ในตัวแปร NGORK_AI_API_URL ก่อนครับ",
-        "assistant"
-      );
-      return;
-    }
-
     addAIMessage(message, "user");
     aiInput.value = "";
     aiSend.disabled = true;
     aiInput.disabled = true;
 
-    const loadingMessage = addAIMessage("กำลังคิดคำตอบให้ครับ…", "assistant");
+    const loadingMessage = addAIMessage(
+      "กำลังคิดคำตอบให้ครับ…",
+      "assistant"
+    );
 
-    
-try {
-  const response = await fetch(NGORK_AI_API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "text/plain;charset=utf-8"
-    },
-    body: JSON.stringify({ message }),
-    signal: AbortSignal.timeout(20000)
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}`);
-  }
-
-  const data = await response.json();
-
-  if (!data.success || typeof data.answer !== "string") {
-    throw new Error(data.error || "Backend ไม่ได้ส่งคำตอบกลับ");
-  }
-
-  loadingMessage.textContent = data.answer;
-
-} catch (error) {
-  console.error("NGORK AI error:", error);
-
-  loadingMessage.textContent =
-    error.name === "TimeoutError"
-      ? "AI ใช้เวลานานเกินไปครับ ลองส่งใหม่อีกครั้ง"
-      : "เชื่อมต่อ AI ไม่สำเร็จครับ กรุณาตรวจสอบ Console";
-
-} finally {
-  aiSend.disabled = false;
-  aiInput.disabled = false;
-  aiInput.focus();
-}
-
+    try {
+      const response = await fetch(NGORK_AI_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify({ message }),
+        signal: AbortSignal.timeout(20000)
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
@@ -640,9 +599,12 @@ try {
 
     } catch (error) {
       console.error("NGORK AI error:", error);
+
       loadingMessage.textContent =
-        "ยังเชื่อมต่อ AI ไม่สำเร็จครับ อาจเกิดจากการเชื่อมต่อหรือข้อจำกัด CORS " +
-        "ลองเปิด Console ใน Developer Tools เพื่อตรวจสอบรายละเอียด";
+        error.name === "TimeoutError"
+          ? "AI ใช้เวลานานเกินไปครับ ลองส่งใหม่อีกครั้ง"
+          : "เชื่อมต่อ AI ไม่สำเร็จครับ กรุณาตรวจสอบ Console";
+
     } finally {
       aiSend.disabled = false;
       aiInput.disabled = false;
