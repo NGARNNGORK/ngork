@@ -489,6 +489,66 @@
         transition-duration: .01ms !important;
       }
     }
+    
+/* NGORK interactive dashboard preview */
+.dashboard {
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  will-change: transform;
+}
+
+.dashboard:hover {
+  box-shadow:
+    0 40px 90px rgba(86, 66, 141, 0.25),
+    inset 0 1px 0 white;
+}
+
+.dashboard .stat,
+.dashboard .task {
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dashboard .stat:hover {
+  transform: translateY(-5px) translateZ(10px);
+  box-shadow: 0 12px 24px rgba(128, 96, 219, 0.12);
+}
+
+.dashboard .task {
+  border-radius: 12px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+.dashboard .task:hover {
+  transform: translateX(5px);
+  background: #f7f3ff;
+}
+
+.dashboard .check {
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.dashboard .task:active,
+.dashboard .stat:active {
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard,
+  .dashboard .stat,
+  .dashboard .task,
+  .dashboard .check {
+    transition: none !important;
+  }
+}
+
   </style>
 </head>
 <body>
