@@ -181,6 +181,79 @@ function renderStats() {
   $("#progress-title").textContent = total === 0 ? "เริ่มต้นจากงานแรกกัน!" : percent === 100 ? "ยอดเยี่ยม! คุณทำครบทุกงานแล้ว" : "ทุกก้าวคือความคืบหน้า";
   $("#progress-copy").textContent = total === 0 ? "เพิ่มงานที่ต้องทำ แล้วติดตามความคืบหน้าได้ที่นี่" : `คุณทำงานสำเร็จแล้ว ${done} จาก ${total} งาน`;
 }
+
+function getSmartPriority(task) {
+  if (task.done) {
+    return {
+      level: "done",
+      label: "เสร็จแล้ว",
+      score: -1,
+      reason: "ทำงานนี้เสร็จเรียบร้อยแล้ว"
+    };
+  }
+
+  // แปลงวันครบกำหนดให้เปรียบเทียบเป็นวัน
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const dueDate = new Date(`${task.date}T00:00:00`);
+  const daysLeft = Math.round(
+    (dueDate.getTime() - today.getTime()) / 86400000
+  );
+
+  if (Number.isNaN(dueDate.getTime())) {
+    return {
+      level: "normal",
+      label: "ตรวจสอบวันส่ง",
+      score: 10,
+      reason: "กรุณาตรวจสอบวันครบกำหนดของงานนี้"
+    };
+  }
+
+  if (daysLeft < 0) {
+    return {
+      level: "urgent",
+      label: "เลยกำหนด",
+      score: 100,
+      reason: "งานนี้เลยวันครบกำหนดแล้ว ควรตรวจสอบก่อน"
+    };
+  }
+
+  if (daysLeft === 0) {
+    return {
+      level: "urgent",
+      label: "ส่งวันนี้",
+      score: 90,
+      reason: "งานนี้ครบกำหนดวันนี้"
+    };
+  }
+
+  if (daysLeft <= 2) {
+    return {
+      level: "high",
+      label: "เร่งด่วน",
+      score: 70,
+      reason: `เหลือเวลาอีก ${daysLeft} วันก่อนส่ง`
+    };
+  }
+
+  if (daysLeft <= 5) {
+    return {
+      level: "medium",
+      label: "ควรเริ่มทำ",
+      score: 40,
+      reason: `ควรเริ่มทำไว้ก่อน เหลือ ${daysLeft} วัน`
+    };
+  }
+
+  return {
+    level: "normal",
+    label: "รอได้",
+    score: 10,
+    reason: `ยังมีเวลาอีก ${daysLeft} วัน`
+  };
+}
+
 function renderFocus() {
   const list = tasks.filter(t => !t.done).sort((a, b) => a.date.localeCompare(b.date)).slice(0, 4);
   const root = $("#focus-list");
