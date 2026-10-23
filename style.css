@@ -1337,3 +1337,110 @@ input[type="checkbox"] {
     gap: 8px;
   }
 }
+
+/* FIX: อ่านข้อความ Dashboard ให้ชัด */
+body,
+.main-content,
+.page-heading h1,
+.panel h2,
+.panel h3,
+.stat-value,
+.stat-top,
+.stat-foot,
+.breadcrumb,
+.profile strong,
+.mini-card strong,
+.mini-card p {
+  color: #29264a;
+}
+
+/* เมนูที่ยังไม่ถูกเลือก */
+.nav-item {
+  color: #555477 !important;
+  background: transparent;
+}
+
+/* ข้อความเมนูเมื่อเอาเมาส์ชี้ */
+.nav-item:hover {
+  color: #6040e8 !important;
+  background: #eee9ff;
+}
+
+/* เมนูที่เลือกอยู่ */
+.nav-item.active {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #8968ff, #6543eb);
+}
+
+/* ตัวเลขและข้อความในแถบสรุป */
+.stat-value {
+  color: #30265e !important;
+}
+
+.stat-foot,
+.subtitle,
+.task-table-head,
+.filter-wrap,
+.list-footer {
+  color: #68678d;
+}
+
+/* ชื่อและรายละเอียดงาน */
+.task-list,
+.task-list *,
+.focus-list,
+.focus-list * {
+  color: #39365f;
+}
+
+.task-list button,
+.focus-list button {
+  color: #6040e8;
+}
+
+/* ช่องค้นหาและตัวเลือก */
+input,
+select,
+textarea,
+.field-input {
+  color: #29264a;
+  background-color: #ffffff;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9291ad;
+  opacity: 1;
+}
+
+/* กล่องข้อความด้านล่าง Sidebar */
+.mini-card p {
+  color: #656287;
+}
+
+/* อย่าให้ตัวหนังสือถูกตัดด้านขวา */
+.main-content {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.app-shell {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    max-width: 280px;
+  }
+
+  .main-content {
+    overflow-x: hidden;
+  }
+
+  .content-grid,
+  .stats-grid {
+    min-width: 0;
+  }
+}
