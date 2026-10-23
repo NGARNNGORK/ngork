@@ -221,17 +221,61 @@ function render() {
   renderFocus();
   renderList();
 }
+
 function setView(view) {
   activeView = view;
-  const titles = { dashboard: "ภาพรวม", tasks: "งานทั้งหมด", upcoming: "ใกล้ถึงกำหนด" };
+
+  const titles = {
+    dashboard: "ภาพรวม",
+    tasks: "งานทั้งหมด",
+    upcoming: "ใกล้ถึงกำหนด"
+  };
+
+  // เปลี่ยนหัวข้อด้านบน
   $("#breadcrumb-current").textContent = titles[view];
-  $("#list-title").textContent = view === "upcoming" ? "งานที่ใกล้ถึงกำหนด" : view === "tasks" ? "งานทั้งหมดของฉัน" : "รายการงานของฉัน";
-  $$(".nav-item").forEach(btn => btn.classList.toggle("active", btn.dataset.view === view));
+
+  // เลือกส่วนที่จะแสดงในแต่ละเมนู
+  const statsGrid = document.querySelector(".stats-grid");
+  const contentGrid = document.querySelector(".content-grid");
+  const tasksPanel = document.querySelector(".tasks-panel");
+
+  if (view === "dashboard") {
+    statsGrid.style.display = "";
+    contentGrid.style.display = "";
+    tasksPanel.style.display = "none";
+
+    $("#greeting").innerHTML = 'จัดการงานให้เป็นเรื่องง่าย<span>.</span>';
+  } else {
+    statsGrid.style.display = "none";
+    contentGrid.style.display = "none";
+    tasksPanel.style.display = "";
+
+    $("#list-title").textContent =
+      view === "upcoming"
+        ? "งานที่ใกล้ถึงกำหนด"
+        : "งานทั้งหมดของฉัน";
+
+    $("#greeting").textContent =
+      view === "upcoming"
+        ? "เตรียมตัวก่อนถึงกำหนด"
+        : "จัดการงานทั้งหมดของฉัน";
+  }
+
+  // อัปเดตเมนูที่ถูกเลือก
+  $$(".nav-item").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.view === view);
+  });
+
+  // รีเซ็ตตัวกรองสถานะ
   $("#status-filter").value = "all";
+
+  // ปิดเมนูมือถือ
   $("#sidebar").classList.remove("open");
+
+  // วาดรายการงานใหม่
   renderList();
-  if (view !== "dashboard") $("#list-title").scrollIntoView({ behavior: "smooth", block: "center" });
 }
+
 function openModal(task = null) {
   $("#task-form").reset();
   $("#task-date").value = localDate();
