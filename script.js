@@ -182,6 +182,7 @@ function renderStats() {
   $("#progress-copy").textContent = total === 0 ? "เพิ่มงานที่ต้องทำ แล้วติดตามความคืบหน้าได้ที่นี่" : `คุณทำงานสำเร็จแล้ว ${done} จาก ${total} งาน`;
 }
 
+
 function getSmartPriority(task) {
   if (task.done) {
     return {
@@ -192,14 +193,10 @@ function getSmartPriority(task) {
     };
   }
 
-  // แปลงวันครบกำหนดให้เปรียบเทียบเป็นวัน
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const dueDate = new Date(`${task.date}T00:00:00`);
-  const daysLeft = Math.round(
-    (dueDate.getTime() - today.getTime()) / 86400000
-  );
 
   if (Number.isNaN(dueDate.getTime())) {
     return {
@@ -209,6 +206,10 @@ function getSmartPriority(task) {
       reason: "กรุณาตรวจสอบวันครบกำหนดของงานนี้"
     };
   }
+
+  const daysLeft = Math.round(
+    (dueDate.getTime() - today.getTime()) / 86400000
+  );
 
   if (daysLeft < 0) {
     return {
@@ -253,6 +254,7 @@ function getSmartPriority(task) {
     reason: `ยังมีเวลาอีก ${daysLeft} วัน`
   };
 }
+
 
 function renderFocus() {
   const list = tasks
