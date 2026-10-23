@@ -1534,3 +1534,41 @@ textarea::placeholder {
     grid-column: auto;
   }
 }
+
+/* แก้ไอคอนค้นหาให้อยู่ในกรอบ */
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  min-width: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.search-box > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 20px;
+  width: 20px;
+  margin: 0;
+  line-height: 1;
+}
+
+.search-box input {
+  flex: 1 1 auto;
+  width: 0;
+  min-width: 0;
+  padding: 10px 0;
+  margin: 0;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+
+.search-box input:focus {
+  outline: none;
+  box-shadow: none;
+}
