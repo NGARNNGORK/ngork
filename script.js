@@ -582,7 +582,7 @@ if (aiToggle && aiPanel && aiClose && aiForm &&
           "Content-Type": "text/plain;charset=utf-8"
         },
         body: JSON.stringify({ message }),
-        signal: AbortSignal.timeout(20000)
+        signal: AbortSignal.timeout(60000)
       });
 
       if (!response.ok) {
