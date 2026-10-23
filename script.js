@@ -240,26 +240,26 @@ function setView(view) {
   const tasksPanel = document.querySelector(".tasks-panel");
 
   if (view === "dashboard") {
-    statsGrid.style.display = "";
-    contentGrid.style.display = "";
-    tasksPanel.style.display = "none";
+  statsGrid.style.display = "";
+  contentGrid.style.display = "";
+  tasksPanel.style.display = "none";
 
-    $("#greeting").innerHTML = 'จัดการงานให้เป็นเรื่องง่าย<span>.</span>';
-  } else {
-    statsGrid.style.display = "none";
-    contentGrid.style.display = "none";
-    tasksPanel.style.display = "";
+  $("#greeting").innerHTML = "สวัสดี, Sirawut ✦";
+} else {
+  statsGrid.style.display = "none";
+  contentGrid.style.display = "none";
+  tasksPanel.style.display = "";
 
-    $("#list-title").textContent =
-      view === "upcoming"
-        ? "งานที่ใกล้ถึงกำหนด"
-        : "งานทั้งหมดของฉัน";
+  $("#list-title").textContent =
+    view === "upcoming"
+      ? "งานที่ใกล้ถึงกำหนด"
+      : "งานทั้งหมดของฉัน";
 
-    $("#greeting").textContent =
-      view === "upcoming"
-        ? "เตรียมตัวก่อนถึงกำหนด"
-        : "จัดการงานทั้งหมดของฉัน";
-  }
+  $("#greeting").textContent =
+    view === "upcoming"
+      ? "เตรียมตัวก่อนถึงกำหนด"
+      : "จัดการงานทั้งหมดของฉัน";
+}
 
   // อัปเดตเมนูที่ถูกเลือก
   $$(".nav-item").forEach(btn => {
