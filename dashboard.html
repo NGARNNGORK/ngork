@@ -150,6 +150,41 @@
   </section>
 </div>
 
+
+<!-- NGORK AI Chat -->
+<button id="ngork-ai-toggle" class="ngork-ai-toggle" type="button"
+        aria-label="เปิด NGORK AI">
+  ✦ <span>NGORK AI</span>
+</button>
+
+<section id="ngork-ai-panel" class="ngork-ai-panel" hidden
+         aria-label="แชต NGORK AI">
+  <header class="ngork-ai-header">
+    <div>
+      <strong>✦ NGORK AI</strong>
+      <small>ผู้ช่วยด้านการเรียนของคุณ</small>
+    </div>
+    <button id="ngork-ai-close" type="button"
+            aria-label="ปิดแชต">×</button>
+  </header>
+
+  <div id="ngork-ai-messages" class="ngork-ai-messages"
+       aria-live="polite">
+    <div class="ngork-ai-message assistant">
+      สวัสดีครับ 🌱 ผม NGORK AI ช่วยวางแผนการเรียน
+      แบ่งงานยากให้เป็นขั้นตอน หรืออธิบายบทเรียนได้ครับ
+    </div>
+  </div>
+
+  <form id="ngork-ai-form" class="ngork-ai-form">
+    <textarea id="ngork-ai-input" rows="2" maxlength="1000"
+              placeholder="ถามเรื่องเรียนได้เลย..." required></textarea>
+    <button id="ngork-ai-send" type="submit">ส่ง ↗</button>
+  </form>
+  <p class="ngork-ai-note">AI อาจตอบผิดได้ ควรตรวจสอบข้อมูลสำคัญอีกครั้ง</p>
+</section>
+<!-- End NGORK AI -->
+
   <div id="toast" class="toast" role="status"></div>
   <input id="profile-photo-input" type="file" accept="image/*" hidden>
   <script type="module" src="script.js"></script>
