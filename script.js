@@ -588,15 +588,43 @@ if (!NGORK_AI_API_URL.startsWith("https://script.google.com/")) {
 
     const loadingMessage = addAIMessage("กำลังคิดคำตอบให้ครับ…", "assistant");
 
-    try {
-      const response = await fetch(NGORK_AI_API_URL, {
-        method: "POST",
-        // ใช้ text/plain เพื่อลดโอกาสเกิด CORS preflight
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify({ message })
-      });
+    
+try {
+  const response = await fetch(NGORK_AI_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify({ message }),
+    signal: AbortSignal.timeout(20000)
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  if (!data.success || typeof data.answer !== "string") {
+    throw new Error(data.error || "Backend ไม่ได้ส่งคำตอบกลับ");
+  }
+
+  loadingMessage.textContent = data.answer;
+
+} catch (error) {
+  console.error("NGORK AI error:", error);
+
+  loadingMessage.textContent =
+    error.name === "TimeoutError"
+      ? "AI ใช้เวลานานเกินไปครับ ลองส่งใหม่อีกครั้ง"
+      : "เชื่อมต่อ AI ไม่สำเร็จครับ กรุณาตรวจสอบ Console";
+
+} finally {
+  aiSend.disabled = false;
+  aiInput.disabled = false;
+  aiInput.focus();
+}
+
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
