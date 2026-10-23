@@ -150,6 +150,36 @@
   </section>
 </div>
 
+
+<!-- NGORK AI Chat -->
+<button id="ngork-ai-toggle" class="ngork-ai-toggle" type="button">
+  🌱 คุยกับ NGORK AI
+</button>
+
+<section id="ngork-ai-panel" class="ngork-ai-panel" hidden>
+  <div class="ngork-ai-header">
+    <strong>🌱 NGORK AI</strong>
+    <button id="ngork-ai-close" type="button" aria-label="ปิดแชต">✕</button>
+  </div>
+
+  <div id="ngork-ai-messages" class="ngork-ai-messages">
+    <div class="ngork-ai-message assistant">
+      สวัสดีครับ มีอะไรให้ NGORK AI ช่วยเรื่องการเรียนไหมครับ?
+    </div>
+  </div>
+
+  <form id="ngork-ai-form">
+    <input
+      id="ngork-ai-input"
+      type="text"
+      placeholder="พิมพ์ข้อความ..."
+      autocomplete="off"
+      required
+    />
+    <button id="ngork-ai-send" type="submit">ส่ง</button>
+  </form>
+</section>
+
   <div id="toast" class="toast" role="status"></div>
   <input id="profile-photo-input" type="file" accept="image/*" hidden>
   <script type="module" src="script.js"></script>
