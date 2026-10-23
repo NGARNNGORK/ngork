@@ -255,7 +255,19 @@ function getSmartPriority(task) {
 }
 
 function renderFocus() {
-  const list = tasks.filter(t => !t.done).sort((a, b) => a.date.localeCompare(b.date)).slice(0, 4);
+  const list = tasks
+  .filter(task => !task.done)
+  .sort((a, b) => {
+    const priorityA = getSmartPriority(a).score;
+    const priorityB = getSmartPriority(b).score;
+
+    if (priorityA !== priorityB) {
+      return priorityB - priorityA;
+    }
+
+    return a.date.localeCompare(b.date);
+  })
+  .slice(0, 4);
   const root = $("#focus-list");
   if (!list.length) {
     root.innerHTML = `<div class="empty-state"><span>✦</span><strong>${tasks.length ? "ไม่มีงานค้างแล้ว เยี่ยมมาก!" : "ยังไม่มีงานในรายการ"}</strong><p>${tasks.length ? "พักสักหน่อย แล้วค่อยเริ่มงานใหม่" : "เพิ่มงานแรกของคุณได้เลย"}</p></div>`;
