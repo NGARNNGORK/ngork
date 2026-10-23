@@ -110,6 +110,46 @@
       </form>
     </section>
   </div>
+  
+<div class="profile-popover" id="profile-popover" hidden>
+  <div class="profile-popover-user">
+    <div class="avatar profile-popover-avatar" id="popover-avatar">N</div>
+    <div class="profile-popover-info">
+      <strong id="popover-name">พื้นที่ของฉัน</strong>
+      <small id="popover-email">บัญชี NGORK</small>
+    </div>
+  </div>
+  <button type="button" class="profile-menu-btn" id="edit-profile-btn">✎ แก้ไขโปรไฟล์</button>
+</div>
+
+<div class="profile-modal-backdrop" id="profile-modal-backdrop" hidden>
+  <section class="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
+    <div class="modal-heading">
+      <div>
+        <p class="eyebrow">YOUR PROFILE</p>
+        <h2 id="profile-modal-title">แก้ไขโปรไฟล์</h2>
+      </div>
+      <button type="button" class="close-btn" id="close-profile-modal" aria-label="ปิด">×</button>
+    </div>
+    <form id="profile-form">
+      <div class="profile-photo-editor">
+        <div class="avatar profile-editor-avatar" id="profile-preview">N</div>
+        <label class="secondary-btn profile-upload-label">
+          เลือกรูปโปรไฟล์
+          <input type="file" id="profile-photo-file" accept="image/*" hidden>
+        </label>
+        <small>เลือกรูปภาพขนาดไม่เกิน 5 MB</small>
+      </div>
+      <label class="field-label" for="profile-name-input">ชื่อที่แสดง</label>
+      <input class="field-input" id="profile-name-input" maxlength="50" required>
+      <div class="modal-actions">
+        <button type="button" class="secondary-btn" id="cancel-profile-edit">ยกเลิก</button>
+        <button type="submit" class="primary-btn">บันทึก</button>
+      </div>
+    </form>
+  </section>
+</div>
+
   <div id="toast" class="toast" role="status"></div>
   <input id="profile-photo-input" type="file" accept="image/*" hidden>
   <script type="module" src="script.js"></script>
