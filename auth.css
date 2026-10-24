@@ -606,6 +606,14 @@ body {
     }
 }
 
+/* แบ่งหน้าจอ Desktop เป็นสองฝั่งเท่ากัน */
+@media (min-width: 851px) {
+  .auth-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+
 @media(max-width:650px) {
     .auth-layout {
         display: block
@@ -987,7 +995,7 @@ body {
 
   .scene-task:hover {
     transform: translateX(4px);
-    border-color: #ded3ff;
+    border-color: #381f80;
     box-shadow: 0 6px 16px #7658e80c;
   }
 }
@@ -1082,79 +1090,185 @@ body {
   }
 }
 
-/* NGORK: ปรับหน้าเข้าสู่ระบบเป็นธีมสีม่วง */
-:root {
-  --auth-purple: #7652f5;
-  --auth-purple-dark: #6040e8;
-  --auth-purple-light: #eee9ff;
+
+
+/* NGORK - Lavender Theme */
+.auth-page {
+  background: #1b1343;
+  color: #30265A;
 }
 
-/* ป้องกันเนื้อหาตกขอบ */
-.auth-layout {
-  min-height: 100vh;
-  height: auto;
-  overflow: hidden;
-}
-
-/* ขยายพื้นที่ฝั่งฟอร์ม */
+.welcome-panel,
 .form-side {
-  min-width: 0;
-  padding: 40px clamp(24px, 5vw, 72px);
-  box-sizing: border-box;
+  background: #FFFFFF;
 }
 
-/* ขยายการ์ด Login */
+/* การ์ดเข้าสู่ระบบ */
 .auth-card {
-  width: 100%;
-  max-width: 560px;
-  margin-inline: auto;
-  box-sizing: border-box;
+  background: #FFFFFF;
+  border: 1px solid #E7E0F7;
+  box-shadow: 0 12px 40px rgba(48, 38, 90, 0.08);
 }
 
-/* เปลี่ยนปุ่มหลักเป็นสีม่วง */
+/* ปุ่มหลัก */
 .submit-button {
-  background: linear-gradient(135deg, #8968ff, #6040e8) !important;
-  color: #fff !important;
-  box-shadow: 0 10px 24px rgba(118, 82, 245, 0.2);
-}
-
-.submit-button:hover {
-  background: linear-gradient(135deg, #7652f5, #5030d5) !important;
-}
-
-/* เปลี่ยนสีแท็บที่เลือก */
-.tab.active {
-  color: #fff !important;
-  background: linear-gradient(135deg, #8968ff, #6040e8) !important;
-}
-
-/* เปลี่ยนสีข้อความและไอคอน */
-.link-button,
-.form-heading .tiny-label,
-.form-icon {
-  color: #7652f5 !important;
+  background: linear-gradient(135deg, #9679F5, #7656E8);
+  color: #FFFFFF;
 }
 
 /* ช่องกรอกข้อมูล */
+.input-wrap {
+  background: #FFFFFF;
+  border-color: #E7E0F7;
+}
+
 .input-wrap:focus-within {
-  border-color: #8968ff;
-  box-shadow: 0 0 0 3px rgba(118, 82, 245, 0.12);
+  border-color: #9679F5;
+  box-shadow: 0 0 0 3px rgba(118, 86, 232, 0.12);
 }
 
-/* ปรับหน้าจอมือถือ */
+
+/* ขยายเฉพาะโลโก้และชื่อแบรนด์ NGORK */
+.brand img {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+}
+
+.brand {
+  font-size: 38px;
+  gap: 28px;
+}
+
+.brand small {
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+
+/* มือถือ */
 @media (max-width: 768px) {
-  .auth-layout {
-    min-height: 100vh;
-    height: auto;
-    overflow: visible;
+  .brand img {
+    width: 60px;
+    height: 60px;
   }
 
-  .form-side {
-    width: 100%;
-    padding: 24px 16px;
+  .brand {
+    font-size: 32px;
+    gap: 10px;
   }
 
-  .auth-card {
-    max-width: 560px;
+  .brand small {
+    font-size: 12px;
+    letter-spacing: 1.5px;
   }
 }
+
+@media (max-width: 768px) {
+  .mobile-brand b {
+    color: #ffffff !important;
+  }
+}
+
+
+/* NGORK — Premium Purple Background Only */
+
+body.auth-page {
+  background:
+    radial-gradient(ellipse at 12% 8%, rgba(169, 132, 255, 0.22), transparent 36%),
+    radial-gradient(ellipse at 88% 85%, rgba(119, 78, 214, 0.16), transparent 35%),
+    linear-gradient(135deg, #f8f5ff 0%, #eee7ff 48%, #f9f7ff 100%);
+}
+
+/* เพิ่มมิติให้พื้นหลังฝั่ง Welcome โดยไม่แก้เนื้อหา */
+.welcome-panel {
+  background:
+    radial-gradient(ellipse at 18% 12%, rgba(195, 166, 255, 0.30), transparent 35%),
+    radial-gradient(ellipse at 85% 78%, rgba(126, 83, 222, 0.38), transparent 38%),
+    linear-gradient(145deg, #211638 0%, #39215f 52%, #6040a8 100%);
+  box-shadow: inset -1px 0 rgba(255, 255, 255, 0.16);
+}
+
+/* แสงวงกลมลอยด้านหลัง */
+.welcome-panel::before {
+  box-shadow:
+    0 0 0 28px rgba(255, 255, 255, 0.025),
+    0 0 0 62px rgba(255, 255, 255, 0.02),
+    0 0 70px rgba(174, 140, 255, 0.10);
+}
+
+/* เพิ่มเงาและความลึกให้การ์ด Login เดิม */
+.auth-card {
+  box-shadow:
+    0 28px 70px rgba(64, 39, 120, 0.14),
+    0 8px 22px rgba(64, 39, 120, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+/* มิติเล็กน้อยเมื่อชี้เมาส์ ไม่เปลี่ยนขนาดหรือเนื้อหา */
+@media (hover: hover) {
+  .auth-card {
+    transition: box-shadow 0.3s ease;
+  }
+
+  .auth-card:hover {
+    box-shadow:
+      0 34px 82px rgba(64, 39, 120, 0.18),
+      0 10px 28px rgba(64, 39, 120, 0.07),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  }
+}
+
+/* ป้องกันการ์ดตัวอย่างเดิมเสียมิติ */
+.scene-board {
+  box-shadow:
+    0 26px 60px rgba(18, 9, 44, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+
+/* แท็บเข้าสู่ระบบ / สมัครสมาชิก */
+.tabs .tab.active {
+  background: linear-gradient(135deg, #b7a0f8, #9679e8);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(118, 86, 232, 0.2);
+}
+
+/* แสดงรหัสผ่าน / ลืมรหัสผ่าน */
+.link-button {
+  color: #8b5cf6;
+}
+
+/* ไอคอนหมวกบัณฑิต */
+.form-icon {
+  color: #9679f5;
+}
+
+/* โลโก้และชื่อ NGORK */
+.brand-mark {
+  background: linear-gradient(145deg, #b7a0f8, #7656e8);
+  color: #ffffff;
+}
+
+.brand b,
+.mobile-brand b {
+  color: #7656e8;
+}
+
+.brand small,
+.mobile-brand small {
+  color: #a18acb;
+}
+
+/* ถ้าไอคอนหมวกเป็น SVG ให้ใช้สีม่วง */
+.form-icon svg {
+  color: #9679f5;
+  stroke: #9679f5;
+}
+
+
+/* เปลี่ยนเฉพาะคำว่า NGORK */
+.brand b,
+.mobile-brand b {
+  color: #d5d3d3 !important;
+}
+

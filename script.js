@@ -529,6 +529,72 @@ const NGORK_AI_API_URL = "https://script.google.com/macros/s/AKfycbzK5tZF-sOOBLH
 
 
 
+function buildTaskContext() {
+  const today = localDate();
+
+  const total = tasks.length;
+  const doneTasks = tasks.filter(task => task.done);
+  const pendingTasks = tasks.filter(task => !task.done);
+  const overdueTasks = pendingTasks.filter(
+    task => task.date && task.date < today
+  );
+
+  const subjects = [
+    ...new Set(
+      tasks
+        .map(task => task.subject?.trim())
+        .filter(Boolean)
+    )
+  ];
+
+  const taskDetails = tasks.map(task => {
+    let daysLeft = null;
+
+    if (task.date) {
+      daysLeft = Math.round(
+        (new Date(task.date + "T00:00:00") -
+         new Date(today + "T00:00:00")) / 86400000
+      );
+    }
+
+    let priority = "ปกติ";
+
+    if (task.done) {
+      priority = "เสร็จแล้ว";
+    } else if (daysLeft === null) {
+      priority = "ไม่ระบุวันส่ง";
+    } else if (daysLeft < 0) {
+      priority = "เลยกำหนด";
+    } else if (daysLeft === 0) {
+      priority = "ต้องส่งวันนี้";
+    } else if (daysLeft <= 2) {
+      priority = "เร่งด่วน";
+    } else if (daysLeft <= 5) {
+      priority = "ควรเริ่มทำ";
+    }
+
+    return {
+      title: task.title || "ไม่ระบุชื่องาน",
+      subject: task.subject || "ไม่ระบุวิชา",
+      note: task.note || "",
+      dueDate: task.date || null,
+      daysLeft,
+      done: Boolean(task.done),
+      priority
+    };
+  });
+
+  return {
+    today,
+    total,
+    completed: doneTasks.length,
+    unfinished: pendingTasks.length,
+    overdue: overdueTasks.length,
+    subjects,
+    tasks: taskDetails
+  };
+}
+
 
 const aiToggle = document.getElementById("ngork-ai-toggle");
 const aiPanel = document.getElementById("ngork-ai-panel");
@@ -583,6 +649,93 @@ if (aiToggle && aiPanel && aiClose && aiForm && aiInput && aiMessages && aiSend)
   });
 
   
+function formatAIAnswer(text) {
+  // แปลงข้อความให้เป็นรายการที่อ่านง่าย แม้ AI จะส่งมาในบรรทัดเดียว
+  let source = String(text || "")
+    .replace(/\r\n?/g, "\n")
+    .replace(/[ \t]+(•|●|▪)\s*/g, "\n• ")
+    .replace(/[ \t]+(\d+)[.)]\s+/g, "\n$1. ");
+
+  // ป้องกันข้อความจาก AI ถูกตีความเป็น HTML
+  const escape = value =>
+    value.replace(/[&<>"']/g, char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[char]);
+
+  const lines = source.split("\n");
+  const output = [];
+  let listOpen = false;
+
+  function closeList() {
+    if (listOpen) {
+      output.push("</ul>");
+      listOpen = false;
+    }
+  }
+
+  function formatInline(value) {
+    return escape(value)
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.+?)\*/g, "<em>$1</em>")
+      .replace(/`([^`]+)`/g, "<code>$1</code>");
+  }
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+
+    if (!line || /^---+$/.test(line)) {
+      closeList();
+      continue;
+    }
+
+    // หัวข้อ เช่น ### สรุปงาน
+    const heading = line.match(/^#{1,3}\s+(.+)$/);
+
+    if (heading) {
+      closeList();
+      output.push(
+        `<div class="ai-answer-heading">${formatInline(heading[1])}</div>`
+      );
+      continue;
+    }
+
+    // รายการ เช่น • งานคณิตศาสตร์
+    const bullet = line.match(/^(?:•|●|▪|-)\s+(.+)$/);
+
+    if (bullet) {
+      if (!listOpen) {
+        output.push('<ul class="ai-answer-list">');
+        listOpen = true;
+      }
+
+      output.push(`<li>${formatInline(bullet[1])}</li>`);
+      continue;
+    }
+
+    closeList();
+
+    // ข้อความที่ขึ้นต้นด้วยตัวเลข เช่น 1. งานคณิตศาสตร์
+    const numbered = line.match(/^(\d+)[.)]\s+(.+)$/);
+
+    if (numbered) {
+      output.push(
+        `<div class="ai-answer-numbered"><strong>${numbered[1]}.</strong> ${formatInline(numbered[2])}</div>`
+      );
+      continue;
+    }
+
+    output.push(`<p class="ai-answer-paragraph">${formatInline(line)}</p>`);
+  }
+
+  closeList();
+  return output.join("");
+}
+
+  
 function addAIMessage(text, sender) {
     const row = document.createElement("div");
 
@@ -604,7 +757,7 @@ function addAIMessage(text, sender) {
 
         const bubble = document.createElement("div");
         bubble.className = "ai-assistant-bubble";
-        bubble.textContent = text;
+        bubble.innerHTML = formatAIAnswer(text);
 
         row.append(avatar, bubble);
     } else {
@@ -657,7 +810,9 @@ function addAIMessage(text, sender) {
       script.remove();
 
       const bubble = loadingMessage.querySelector(".ai-assistant-bubble");
-      if (bubble) bubble.textContent = text;
+      if (bubble) {
+  bubble.innerHTML = formatAIAnswer(text);
+}
       else loadingMessage.textContent = text;
 
       aiSend.disabled = false;
@@ -674,10 +829,15 @@ function addAIMessage(text, sender) {
 
     script.onerror = () => finish("เชื่อมต่อ NGORK AI ไม่สำเร็จ");
 
-    const params = new URLSearchParams({
-      callback: callbackName,
-      message
-    });
+    
+const taskContext = buildTaskContext();
+
+const params = new URLSearchParams({
+  callback: callbackName,
+  message,
+  context: JSON.stringify(taskContext)
+});
+
 
     script.src = NGORK_AI_API_URL + "?" + params.toString();
     document.body.appendChild(script);

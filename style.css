@@ -2873,3 +2873,134 @@ textarea::placeholder {
     margin: 8px 0 0 auto;
     box-sizing: border-box;
 }
+
+
+/* ==============================
+   NGORK AI — Chat Answer Styling
+   ============================== */
+
+/* กล่องข้อความ AI */
+.ai-assistant-bubble {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+  padding: 14px 16px !important;
+  border-radius: 16px;
+  background: #f5f1ff;
+  color: #35265f;
+  font-family: Tahoma, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.8;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* หัวข้อหลักและหัวข้อย่อย */
+.ai-assistant-bubble .ai-answer-heading {
+  display: block;
+  margin: 15px 0 8px;
+  color: #5636a5;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.ai-assistant-bubble .ai-answer-heading:first-child {
+  margin-top: 0;
+}
+
+/* ย่อหน้าทั่วไป */
+.ai-assistant-bubble .ai-answer-paragraph {
+  margin: 0 0 10px;
+  line-height: 1.8;
+}
+
+.ai-assistant-bubble .ai-answer-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+/* รายการแบบจุด */
+.ai-assistant-bubble .ai-answer-list {
+  margin: 6px 0 14px;
+  padding-left: 22px;
+  list-style-type: disc;
+}
+
+.ai-assistant-bubble .ai-answer-list li {
+  padding-left: 3px;
+  margin: 0 0 8px;
+  line-height: 1.8;
+}
+
+.ai-assistant-bubble .ai-answer-list li:last-child {
+  margin-bottom: 0;
+}
+
+.ai-assistant-bubble .ai-answer-list li::marker {
+  color: #8962e9;
+}
+
+/* รายการแบบมีหมายเลข */
+.ai-assistant-bubble .ai-answer-numbered {
+  display: block;
+  margin: 10px 0;
+  padding: 10px 12px;
+  border-left: 3px solid #a78bfa;
+  border-radius: 0 10px 10px 0;
+  background: rgba(255, 255, 255, 0.7);
+  line-height: 1.8;
+}
+
+.ai-assistant-bubble .ai-answer-numbered strong {
+  color: #7046cc;
+  margin-right: 4px;
+}
+
+/* ตัวหนา */
+.ai-assistant-bubble strong {
+  color: #3f2c76;
+  font-weight: 700;
+}
+
+/* ข้อความเอียง */
+.ai-assistant-bubble em {
+  font-style: italic;
+}
+
+/* โค้ด */
+.ai-assistant-bubble code {
+  padding: 2px 5px;
+  border-radius: 5px;
+  background: #e9e1ff;
+  color: #5636a5;
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+/* หน้าจอมือถือ */
+@media (max-width: 480px) {
+  .ai-assistant-bubble {
+    padding: 12px 13px !important;
+    font-size: 12.5px;
+    line-height: 1.8;
+  }
+
+  .ai-assistant-bubble .ai-answer-heading {
+    font-size: 13.5px;
+    margin-top: 12px;
+  }
+
+  .ai-assistant-bubble .ai-answer-numbered {
+    padding: 9px 10px;
+    margin: 8px 0;
+  }
+
+  .ai-assistant-bubble .ai-answer-list {
+    padding-left: 20px;
+  }
+}
+
+

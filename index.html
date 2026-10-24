@@ -157,12 +157,12 @@
     }
 
     .gradient-text {
-      color: #805bd5;
-      background: linear-gradient(100deg, #a27bea, #6343bf);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+  color: #6842c2;
+  background: linear-gradient(100deg, #8057df, #5130a8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: #6d4eb6;
+}
 
     .hero-desc {
       max-width: 480px;
@@ -548,6 +548,378 @@
     transition: none !important;
   }
 }
+
+
+/* =====================================
+   NGORK — PREMIUM 3D DESIGN
+   ===================================== */
+
+:root {
+  --purple: #7957df;
+  --purple-dark: #5235a5;
+  --lavender: #eee8ff;
+  --ink: #25213d;
+  --muted: #817b98;
+  --line: #e8e2f5;
+  --shadow: 0 20px 50px rgba(76, 52, 139, 0.12);
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 8% 8%, #e9ddff 0%, transparent 32%),
+    radial-gradient(ellipse at 92% 22%, #e2eaff 0%, transparent 30%),
+    linear-gradient(145deg, #fbfaff, #f5f2ff 55%, #f9faff);
+  background-attachment: fixed;
+}
+
+/* Top navigation */
+.topbar {
+  position: relative;
+  z-index: 10;
+}
+
+.brand-logo {
+  filter: drop-shadow(0 5px 8px rgba(95, 67, 172, 0.18));
+  transition: transform 0.3s ease;
+}
+
+.brand:hover .brand-logo {
+  transform: translateY(-2px) rotate(-4deg);
+}
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(145deg, #b19aff 0%, #8966ec 48%, #6947ca 100%);
+  box-shadow:
+    0 8px 0 #5636a8,
+    0 14px 28px rgba(112, 78, 203, 0.24),
+    inset 0 2px 2px rgba(255, 255, 255, 0.65),
+    inset 0 -2px 3px rgba(64, 38, 132, 0.14);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 10px 0 #5636a8,
+    0 20px 35px rgba(112, 78, 203, 0.3),
+    inset 0 2px 2px rgba(255, 255, 255, 0.65);
+  filter: saturate(1.08);
+}
+
+.btn-primary:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 3px 0 #5636a8,
+    0 7px 15px rgba(112, 78, 203, 0.2);
+}
+
+.btn-light {
+  box-shadow:
+    0 5px 0 #e5def4,
+    0 10px 24px rgba(76, 52, 139, 0.07),
+    inset 0 1px 0 white;
+}
+
+.btn-light:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 0 #e5def4, 0 15px 28px rgba(76, 52, 139, 0.12);
+}
+
+/* Hero title */
+.eyebrow {
+  box-shadow:
+    0 5px 12px rgba(112, 78, 203, 0.07),
+    inset 0 1px 0 white;
+}
+
+.hero h1 {
+  text-shadow: 0 3px 0 rgba(255, 255, 255, 0.8);
+}
+
+.gradient-text {
+  background: linear-gradient(110deg, #b09aff, #8058df 48%, #5738b1);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Floating 3D dashboard */
+.mockup-area {
+  isolation: isolate;
+}
+
+.orb {
+  z-index: -1;
+  filter: saturate(1.08);
+}
+
+.orb.one {
+  background: linear-gradient(140deg, #f0eaff, #bba4ff 55%, #8662db);
+  box-shadow:
+    0 25px 40px rgba(110, 79, 196, 0.2),
+    inset 0 3px 5px rgba(255, 255, 255, 0.9),
+    inset -5px -7px 12px rgba(94, 58, 172, 0.12);
+}
+
+.orb.two {
+  background: linear-gradient(145deg, #d7e4ff, #a9b9ff 55%, #8e79e5);
+  box-shadow:
+    0 18px 30px rgba(92, 94, 190, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.9);
+}
+
+.dashboard {
+  background: linear-gradient(145deg, #ffffff 0%, #fcfaff 65%, #f6f2ff 100%);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 3px 5px rgba(78, 54, 138, 0.04),
+    0 15px 30px rgba(78, 54, 138, 0.08),
+    0 35px 70px rgba(78, 54, 138, 0.14),
+    inset 0 2px 0 #ffffff;
+  transform: rotateY(-5deg) rotateX(2deg);
+  transform-style: preserve-3d;
+}
+
+.dashboard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0.65),
+    transparent 35%,
+    transparent 75%,
+    rgba(202, 185, 255, 0.1)
+  );
+}
+
+.dash-head,
+.stats,
+.task-title,
+.task {
+  position: relative;
+  z-index: 1;
+}
+
+.avatar,
+.profile-avatar {
+  background: linear-gradient(145deg, #eee7ff, #c8b6ff 65%, #a28ae9);
+  box-shadow:
+    0 7px 16px rgba(112, 78, 203, 0.14),
+    inset 0 2px 3px rgba(255, 255, 255, 0.85);
+}
+
+/* Statistic cards */
+.stat {
+  background: linear-gradient(145deg, #ffffff, #f1ebff);
+  border: 1px solid #e8dfff;
+  box-shadow:
+    0 5px 0 #e7def9,
+    0 10px 20px rgba(105, 75, 178, 0.07),
+    inset 0 1px 0 white;
+  transform: translateZ(4px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stat:hover {
+  transform: translateY(-4px) translateZ(10px);
+  box-shadow:
+    0 8px 0 #e7def9,
+    0 18px 28px rgba(105, 75, 178, 0.13),
+    inset 0 1px 0 white;
+}
+
+
+
+/* Task rows */
+.task {
+  border-radius: 12px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.task:hover {
+  background: #f2edff;
+  transform: translateX(3px);
+}
+
+.check {
+  background: linear-gradient(145deg, #ffffff, #eee7ff);
+  box-shadow: inset 0 1px 2px white;
+}
+
+.check.done {
+  background: linear-gradient(145deg, #b29aff, #7957d8);
+  box-shadow:
+    0 3px 7px rgba(105, 75, 178, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+/* Feature cards */
+.feature {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, #ffffff, #faf8ff);
+  border: 1px solid rgba(232, 224, 250, 0.95);
+  box-shadow:
+    0 5px 0 #e9e1f8,
+    0 14px 30px rgba(76, 52, 139, 0.07),
+    inset 0 1px 0 white;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.feature::before {
+  content: "";
+  position: absolute;
+  top: -55px;
+  right: -45px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(183, 160, 255, 0.2), transparent 70%);
+  pointer-events: none;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 8px 0 #e9e1f8,
+    0 24px 42px rgba(76, 52, 139, 0.12),
+    inset 0 1px 0 white;
+}
+
+.feature-icon,
+.step-number {
+  position: relative;
+  background: linear-gradient(145deg, #ffffff, #e6dcff 70%, #d3c2ff);
+  color: #6949bb;
+  box-shadow:
+    0 5px 0 #d6c7f5,
+    0 9px 16px rgba(105, 75, 178, 0.1),
+    inset 0 2px 2px white;
+}
+
+/* Steps */
+.step {
+  background: linear-gradient(145deg, #ffffff, #faf8ff);
+  border: 1px solid #e8e2f5;
+  box-shadow:
+    0 5px 0 #e9e2f7,
+    0 12px 25px rgba(76, 52, 139, 0.06),
+    inset 0 1px 0 white;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.step:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 8px 0 #e9e2f7,
+    0 20px 35px rgba(76, 52, 139, 0.1),
+    inset 0 1px 0 white;
+}
+
+/* Call-to-action */
+.cta {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(125deg, #eee7ff, #e7eaff 55%, #f7edff);
+  box-shadow:
+    0 7px 0 #e5dcfa,
+    0 24px 50px rgba(76, 52, 139, 0.12),
+    inset 0 2px 0 white;
+}
+
+.cta::before {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  right: -70px;
+  top: -130px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.9), transparent 70%);
+  pointer-events: none;
+}
+
+/* Profile */
+.profile-card {
+  background: linear-gradient(145deg, #ffffff, #f8f5ff);
+  box-shadow:
+    0 6px 0 #e9e1f7,
+    0 22px 45px rgba(76, 52, 139, 0.1),
+    inset 0 1px 0 white;
+}
+
+/* Mobile navigation */
+.mobile-nav {
+  box-shadow:
+    0 5px 0 rgba(225, 217, 244, 0.9),
+    0 15px 40px rgba(57, 42, 97, 0.16),
+    inset 0 1px 0 white;
+}
+
+.mobile-link.active {
+  background: linear-gradient(145deg, #f5f0ff, #e8deff);
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 0.9),
+    0 3px 8px rgba(105, 75, 178, 0.08);
+}
+
+/* Responsive and accessibility */
+@media (max-width: 650px) {
+  .dashboard {
+    transform: none;
+  }
+
+  .stat {
+    transform: none;
+  }
+
+  .feature:hover,
+  .step:hover {
+    transform: translateY(-2px);
+  }
+
+  .hero h1 {
+    letter-spacing: -1.2px;
+  }
+
+  .orb.one {
+    width: 70px;
+    height: 70px;
+    border-radius: 23px;
+  }
+
+  .orb.two {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb {
+    animation: none !important;
+  }
+
+  .btn,
+  .feature,
+  .step,
+  .stat,
+  .task,
+  .brand-logo {
+    transition: none !important;
+  }
+}
+
 
   </style>
 </head>
