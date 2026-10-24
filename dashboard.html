@@ -111,6 +111,8 @@
     </section>
   </div>
   
+
+<!-- แถบโปรไฟล์ -->
 <div class="profile-popover" id="profile-popover" hidden>
   <div class="profile-popover-user">
     <div class="avatar profile-popover-avatar" id="popover-avatar">N</div>
@@ -119,18 +121,30 @@
       <small id="popover-email">บัญชี NGORK</small>
     </div>
   </div>
-  <button type="button" class="profile-menu-btn" id="edit-profile-btn">✎ แก้ไขโปรไฟล์</button>
+
+  <button type="button" class="profile-menu-btn" id="edit-profile-btn">
+    ✎ แก้ไขโปรไฟล์
+  </button>
+
+  <button type="button" class="profile-menu-btn logout-menu-btn" id="logout-btn">
+    ↪ ออกจากระบบ
+  </button>
 </div>
 
+<!-- หน้าต่างแก้ไขโปรไฟล์เดิม -->
 <div class="profile-modal-backdrop" id="profile-modal-backdrop" hidden>
-  <section class="profile-modal" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
+  <section class="profile-modal" role="dialog" aria-modal="true"
+    aria-labelledby="profile-modal-title">
+
     <div class="modal-heading">
       <div>
         <p class="eyebrow">YOUR PROFILE</p>
         <h2 id="profile-modal-title">แก้ไขโปรไฟล์</h2>
       </div>
-      <button type="button" class="close-btn" id="close-profile-modal" aria-label="ปิด">×</button>
+      <button type="button" class="close-btn" id="close-profile-modal"
+        aria-label="ปิด">×</button>
     </div>
+
     <form id="profile-form">
       <div class="profile-photo-editor">
         <div class="avatar profile-editor-avatar" id="profile-preview">N</div>
@@ -140,10 +154,14 @@
         </label>
         <small>เลือกรูปภาพขนาดไม่เกิน 5 MB</small>
       </div>
+
       <label class="field-label" for="profile-name-input">ชื่อที่แสดง</label>
       <input class="field-input" id="profile-name-input" maxlength="50" required>
+
       <div class="modal-actions">
-        <button type="button" class="secondary-btn" id="cancel-profile-edit">ยกเลิก</button>
+        <button type="button" class="secondary-btn" id="cancel-profile-edit">
+          ยกเลิก
+        </button>
         <button type="submit" class="primary-btn">บันทึก</button>
       </div>
     </form>
@@ -152,39 +170,99 @@
 
 
   <div id="toast" class="toast" role="status"></div>
-  
-  <!-- NGORK AI -->
-  <button
-    type="button"
-    id="ngork-ai-toggle"
-    class="ngork-ai-toggle"
-    aria-label="เปิด NGORK AI"
-    title="ถาม NGORK AI"
-  >
-    ✦ <span>NGORK AI</span>
-  </button>
 
-  <section
-    id="ngork-ai-panel"
-    class="ngork-ai-panel"
-    role="dialog"
-    aria-label="แชต NGORK AI"
-    hidden
-  >
-    <header class="ngork-ai-header">
+<!-- NGORK AI -->
+<button
+  type="button"
+  id="ngork-ai-toggle"
+  class="ngork-ai-toggle"
+  aria-label="เปิด NGORK AI"
+  title="ถาม NGORK AI"
+>
+  <svg class="ngork-ai-logo" viewBox="0 0 48 48" aria-hidden="true">
+    <defs>
+      <linearGradient id="ngorkStarGradient" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#ffffff"/>
+        <stop offset="45%" stop-color="#f1eaff"/>
+        <stop offset="100%" stop-color="#c5a8ff"/>
+      </linearGradient>
+    </defs>
+    <path
+      d="M22 3 C25 15 31 21 43 24 C31 27 25 33 22 45 C19 33 13 27 1 24 C13 21 19 15 22 3Z"
+      fill="url(#ngorkStarGradient)"
+    />
+    <path
+      d="M37 2 L39 7 L44 9 L39 11 L37 16 L35 11 L30 9 L35 7Z"
+      fill="#ffffff"
+    />
+    <circle cx="9" cy="9" r="1.8" fill="#ffffff"/>
+  </svg>
+  <span>NGORK AI</span>
+</button>
+
+<section
+  id="ngork-ai-panel"
+  class="ngork-ai-panel"
+  role="dialog"
+  aria-label="แชต NGORK AI"
+  hidden
+>
+  <header class="ngork-ai-header">
+    <div class="ai-brand">
+      <span class="ai-header-star" aria-hidden="true">✦</span>
       <div>
-        <strong>✦ NGORK AI</strong>
+        <strong>NGORK AI</strong>
         <small>ผู้ช่วยจัดการการเรียน</small>
-      </div>
-      <button type="button" id="ngork-ai-close" aria-label="ปิดแชต">×</button>
-    </header>
-
-    <div id="ngork-ai-messages" class="ngork-ai-messages" aria-live="polite">
-      <div class="ngork-ai-message assistant">
-        สวัสดีครับ ผม NGORK AI มีอะไรให้ช่วยเรื่องการเรียนไหมครับ?
       </div>
     </div>
 
+    <div class="ai-header-actions">
+      <button type="button" id="ngork-ai-minimize" aria-label="ย่อแชต">−</button>
+      <button type="button" id="ngork-ai-close" aria-label="ปิดแชต">×</button>
+    </div>
+  </header>
+
+  <div id="ngork-ai-messages" class="ngork-ai-messages" aria-live="polite">
+    <div class="ai-welcome-row">
+      <div class="ai-bot-avatar" aria-hidden="true">
+        <svg viewBox="0 0 64 64" role="img" aria-label="AI">
+          <defs>
+            <linearGradient id="botAura" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#e5d9ff"/>
+              <stop offset="100%" stop-color="#9270f5"/>
+            </linearGradient>
+            <linearGradient id="botFace" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#55418e"/>
+              <stop offset="100%" stop-color="#30205f"/>
+            </linearGradient>
+          </defs>
+          <circle cx="32" cy="32" r="30" fill="url(#botAura)"/>
+          <path d="M32 9v7" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="32" cy="7" r="4" fill="#fff"/>
+          <rect x="11" y="19" width="42" height="32" rx="13" fill="#fff" opacity=".85"/>
+          <rect x="15" y="23" width="34" height="24" rx="10" fill="url(#botFace)"/>
+          <circle cx="25" cy="34" r="2.5" fill="#fff"/>
+          <circle cx="39" cy="34" r="2.5" fill="#fff"/>
+          <path d="M26 40q6 5 12 0" fill="none" stroke="#d7c7ff" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="10" cy="31" r="3" fill="#fff" opacity=".8"/>
+          <circle cx="54" cy="31" r="3" fill="#fff" opacity=".8"/>
+        </svg>
+      </div>
+      <div class="ai-welcome-message">
+        สวัสดีครับ! ผม NGORK AI<br/>
+        มีอะไรให้ช่วยเรื่องการเรียนไหมครับ? <span>✨</span>
+      </div>
+    </div>
+
+    <div class="ai-quick-actions">
+      <button type="button" data-ai-prompt="ช่วยวางแผนการเรียนให้หน่อย">♧ &nbsp; ช่วยวางแผนการเรียน</button>
+      <button type="button" data-ai-prompt="ช่วยสรุปเนื้อหาวิชาให้เข้าใจง่าย">▤ &nbsp; สรุปเนื้อหาวิชา</button>
+      <button type="button" data-ai-prompt="ช่วยอธิบายและแนะนำวิธีทำการบ้าน">ⓘ &nbsp; ตอบคำถามการบ้าน</button>
+      <button type="button" data-ai-prompt="ช่วยฉันเรื่องการเรียน">✧ &nbsp; อื่น ๆ</button>
+    </div>
+  </div>
+
+  <div class="ai-composer">
     <form id="ngork-ai-form" class="ngork-ai-form">
       <input
         id="ngork-ai-input"
@@ -193,10 +271,18 @@
         placeholder="ถามเรื่องการเรียนได้เลย..."
         aria-label="ข้อความถึง NGORK AI"
         required
-      >
-      <button id="ngork-ai-send" type="submit">ส่ง</button>
+      />
+
+      <button id="ngork-ai-send" type="submit" aria-label="ส่งข้อความ">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 10.7 21 3l-5.7 18-3.1-7.2L3 10.7Z" fill="currentColor"/>
+          <path d="m12.2 13.8 4.2-5.1" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        </svg>
+      </button>
     </form>
-  </section>
+  </div>
+</section>
+
 
   <input id="profile-photo-input" type="file" accept="image/*" hidden>
   <script type="module" src="script.js"></script>

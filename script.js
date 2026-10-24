@@ -1,5 +1,6 @@
 
-  import { auth, db } from "./firebase-config.js";
+ import { auth, db } from "./firebase-config.js";
+import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
   import {
     collection,
     getDocs,
@@ -516,12 +517,7 @@
 
     initializeUserTasks(uid);
   });
-  window.addEventListener("ngork-user-ready", (event) => {
-    const uid = event.detail?.uid;
-    if (!uid) return;
-
-    initializeUserTasks(uid);
-  });
+ 
   setView("dashboard");
 
 /* =========================
@@ -533,100 +529,180 @@ const NGORK_AI_API_URL = "https://script.google.com/macros/s/AKfycbzK5tZF-sOOBLH
 
 
 
+
 const aiToggle = document.getElementById("ngork-ai-toggle");
 const aiPanel = document.getElementById("ngork-ai-panel");
 const aiClose = document.getElementById("ngork-ai-close");
+const aiMinimize = document.getElementById("ngork-ai-minimize");
 const aiForm = document.getElementById("ngork-ai-form");
 const aiInput = document.getElementById("ngork-ai-input");
 const aiMessages = document.getElementById("ngork-ai-messages");
 const aiSend = document.getElementById("ngork-ai-send");
+const aiAttachToggle = document.getElementById("ai-attach-toggle");
 
-if (aiToggle && aiPanel && aiClose && aiForm &&
-    aiInput && aiMessages && aiSend) {
 
+let selectedAIFile = null;
+
+if (aiToggle && aiPanel && aiClose && aiForm && aiInput && aiMessages && aiSend) {
   aiToggle.addEventListener("click", () => {
     aiPanel.hidden = false;
-    aiInput.focus();
   });
 
   aiClose.addEventListener("click", () => {
     aiPanel.hidden = true;
+    if (aiAttachmentMenu) aiAttachmentMenu.hidden = true;
+  });
+
+  aiMinimize?.addEventListener("click", () => {
+    aiPanel.hidden = true;
+  });
+
+  aiAttachToggle?.addEventListener("click", () => {
+    aiAttachmentMenu.hidden = !aiAttachmentMenu.hidden;
+  });
+
+  document.querySelectorAll(
+    "#ai-image-file, #ai-document-file, #ai-pdf-file"
+  ).forEach(input => {
+    input.addEventListener("change", () => {
+      selectedAIFile = input.files?.[0] || null;
+      if (selectedAIFile) {
+        aiAttachmentPreview.textContent =
+          `แนบไฟล์: ${selectedAIFile.name} (${Math.ceil(selectedAIFile.size / 1024)} KB)`;
+        aiAttachmentPreview.hidden = false;
+        aiAttachmentMenu.hidden = true;
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-ai-prompt]").forEach(button => {
+    button.addEventListener("click", () => {
+      aiInput.value = button.dataset.aiPrompt || "";
+      aiInput.focus();
+    });
   });
 
   function addAIMessage(text, sender) {
-    const element = document.createElement("div");
-    element.className = `ngork-ai-message ${sender}`;
-    element.textContent = text;
-    aiMessages.appendChild(element);
-    aiMessages.scrollTop = aiMessages.scrollHeight;
-    return element;
-  }
+    const row = document.createElement("div");
+    row.className = `ngork-ai-message ${sender}`;
 
- 
-aiForm.addEventListener("submit", (event) => {
-  event.preventDefault();
+    if (sender === "assistant") {
+      const wrapper = document.createElement("div");
+      wrapper.style.display = "flex";
+      wrapper.style.alignItems = "flex-start";
+      wrapper.style.gap = "7px";
 
-  const message = aiInput.value.trim();
-  if (!message || aiSend.disabled) return;
+      const avatar = document.createElement("div");
+      avatar.className = "ai-bot-avatar";
+      avatar.innerHTML = `
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="30" fill="#b9a4ff"/>
+          <rect x="13" y="21" width="38" height="29" rx="11" fill="#fff"/>
+          <rect x="17" y="25" width="30" height="21" rx="8" fill="#382765"/>
+          <circle cx="26" cy="34" r="2" fill="#fff"/>
+          <circle cx="38" cy="34" r="2" fill="#fff"/>
+          <path d="M27 40q5 4 10 0" fill="none" stroke="#d9c9ff" stroke-width="2" stroke-linecap="round"/>
+        </svg>`;
 
-  addAIMessage(message, "user");
-  aiInput.value = "";
-  aiSend.disabled = true;
-  aiInput.disabled = true;
+      const bubble = document.createElement("div");
+      bubble.className = "ai-assistant-bubble";
+      bubble.style.cssText =
+        "padding:9px 11px;border-radius:14px;background:#f3eeff;color:#382967;font-size:12px;line-height:1.65;overflow-wrap:anywhere;";
+      bubble.textContent = text;
 
-  const loadingMessage = addAIMessage(
-    "กำลังคิดคำตอบให้ครับ…",
-    "assistant"
-  );
-
-  const callbackName =
-    "ngorkCallback_" +
-    Date.now() +
-    "_" +
-    Math.random().toString(36).slice(2);
-
-  const script = document.createElement("script");
-  let finished = false;
-
-  const timeout = setTimeout(() => {
-    finish("AI ใช้เวลานานเกินไปครับ ลองส่งใหม่อีกครั้ง");
-  }, 60000);
-
-  function finish(text) {
-    if (finished) return;
-    finished = true;
-
-    clearTimeout(timeout);
-    delete window[callbackName];
-    script.remove();
-
-    loadingMessage.textContent = text;
-    aiSend.disabled = false;
-    aiInput.disabled = false;
-    aiInput.focus();
-  }
-
-  window[callbackName] = (data) => {
-    if (data && data.success && typeof data.answer === "string") {
-      finish(data.answer);
+      wrapper.append(avatar, bubble);
+      row.style.cssText = "max-width:100%;margin-top:8px;";
+      row.appendChild(wrapper);
     } else {
-      finish(
-        "AI ตอบกลับไม่สำเร็จ: " +
-        (data?.error || "ไม่ทราบสาเหตุ")
-      );
+      row.textContent = text;
     }
-  };
 
-  script.onerror = () => {
-    finish("เชื่อมต่อ NGORK AI ไม่สำเร็จ กรุณาตรวจสอบ Backend");
-  };
+    aiMessages.appendChild(row);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+    return row;
+  }
 
-  const params = new URLSearchParams({
-    callback: callbackName,
-    message: message
+  aiForm.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const message = aiInput.value.trim();
+    if (!message || aiSend.disabled) return;
+
+    // แจ้งให้ทราบว่าเลือกไฟล์ไว้ แต่ยังไม่ส่งไฟล์ไป AI
+    if (selectedAIFile) {
+      addAIMessage(
+        `เลือกไฟล์ "${selectedAIFile.name}" ไว้แล้ว แต่ระบบ AI ปัจจุบันยังไม่รองรับการอ่านไฟล์แนบ`,
+        "assistant"
+      );
+      return;
+    }
+
+    addAIMessage(message, "user");
+    aiInput.value = "";
+    aiSend.disabled = true;
+    aiInput.disabled = true;
+
+    const loadingMessage = addAIMessage("กำลังคิดคำตอบให้ครับ…", "assistant");
+    const callbackName =
+      "ngorkCallback_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+    const script = document.createElement("script");
+    let finished = false;
+
+    const timeout = setTimeout(() => {
+      finish("AI ใช้เวลานานเกินไปครับ ลองส่งใหม่อีกครั้ง");
+    }, 60000);
+
+    function finish(text) {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timeout);
+      delete window[callbackName];
+      script.remove();
+
+      const bubble = loadingMessage.querySelector(".ai-assistant-bubble");
+      if (bubble) bubble.textContent = text;
+      else loadingMessage.textContent = text;
+
+      aiSend.disabled = false;
+      aiInput.disabled = false;
+    }
+
+    window[callbackName] = data => {
+      if (data?.success && typeof data.answer === "string") {
+        finish(data.answer);
+      } else {
+        finish("AI ตอบกลับไม่สำเร็จ: " + (data?.error || "ไม่ทราบสาเหตุ"));
+      }
+    };
+
+    script.onerror = () => finish("เชื่อมต่อ NGORK AI ไม่สำเร็จ");
+
+    const params = new URLSearchParams({
+      callback: callbackName,
+      message
+    });
+
+    script.src = NGORK_AI_API_URL + "?" + params.toString();
+    document.body.appendChild(script);
   });
+}
 
-  script.src = NGORK_AI_API_URL + "?" + params.toString();
-   document.body.appendChild(script);
-});
+
+// ปุ่มออกจากระบบ NGORK
+const logoutButton = document.getElementById("logout-btn");
+
+if (logoutButton) {
+  logoutButton.addEventListener("click", async () => {
+    
+    logoutButton.disabled = true;
+
+    try {
+      await signOut(auth);
+      window.location.href = "login.html";
+    } catch (error) {
+      console.error("ออกจากระบบไม่สำเร็จ:", error);
+      alert("ออกจากระบบไม่สำเร็จ กรุณาลองอีกครั้ง");
+      logoutButton.disabled = false;
+    }
+  });
 }
