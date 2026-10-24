@@ -545,8 +545,9 @@ if (aiToggle && aiPanel && aiClose && aiForm &&
     aiInput && aiMessages && aiSend) {
 
   aiToggle.addEventListener("click", () => {
-  aiPanel.hidden = false;
-});
+    aiPanel.hidden = false;
+    aiInput.focus();
+  });
 
   aiClose.addEventListener("click", () => {
     aiPanel.hidden = true;
