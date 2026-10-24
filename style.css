@@ -2795,3 +2795,23 @@ textarea::placeholder {
   filter: drop-shadow(0 2px 5px rgba(255, 255, 255, 0.35));
 }
 
+
+/* NGORK AI: แก้ตำแหน่งไม่ให้ทับโปรไฟล์ */
+.ngork-ai-panel {
+  right: 80px;
+  bottom: 74px;
+  width: min(335px, calc(100vw - 100px));
+  max-height: calc(100dvh - 100px);
+  z-index: 999;
+}
+
+/* มือถือจอเล็ก */
+@media (max-width: 480px) {
+  .ngork-ai-panel {
+    right: 8px;
+    bottom: 62px;
+    width: min(335px, calc(100vw - 16px));
+    height: min(355px, calc(100dvh - 76px));
+    max-height: calc(100dvh - 76px);
+  }
+}
