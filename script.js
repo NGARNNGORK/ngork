@@ -582,45 +582,42 @@ if (aiToggle && aiPanel && aiClose && aiForm && aiInput && aiMessages && aiSend)
     });
   });
 
-  function addAIMessage(text, sender) {
+  
+function addAIMessage(text, sender) {
     const row = document.createElement("div");
-    row.className = `ngork-ai-message ${sender}`;
 
     if (sender === "assistant") {
-      const wrapper = document.createElement("div");
-      wrapper.style.display = "flex";
-      wrapper.style.alignItems = "flex-start";
-      wrapper.style.gap = "7px";
+        row.className = "ai-reply-row";
 
-      const avatar = document.createElement("div");
-      avatar.className = "ai-bot-avatar";
-      avatar.innerHTML = `
-        <svg viewBox="0 0 64 64" aria-hidden="true">
-          <circle cx="32" cy="32" r="30" fill="#b9a4ff"/>
-          <rect x="13" y="21" width="38" height="29" rx="11" fill="#fff"/>
-          <rect x="17" y="25" width="30" height="21" rx="8" fill="#382765"/>
-          <circle cx="26" cy="34" r="2" fill="#fff"/>
-          <circle cx="38" cy="34" r="2" fill="#fff"/>
-          <path d="M27 40q5 4 10 0" fill="none" stroke="#d9c9ff" stroke-width="2" stroke-linecap="round"/>
-        </svg>`;
+        const avatar = document.createElement("div");
+        avatar.className = "ai-bot-avatar";
+        avatar.innerHTML = `
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+                <circle cx="32" cy="32" r="30" fill="#b9a4ff"/>
+                <rect x="13" y="21" width="38" height="29" rx="11" fill="#fff"/>
+                <rect x="17" y="25" width="30" height="21" rx="8" fill="#382765"/>
+                <circle cx="26" cy="34" r="2" fill="#fff"/>
+                <circle cx="38" cy="34" r="2" fill="#fff"/>
+                <path d="M27 40q5 4 10 0" fill="none" stroke="#d9c9ff" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        `;
 
-      const bubble = document.createElement("div");
-      bubble.className = "ai-assistant-bubble";
-      bubble.style.cssText =
-        "padding:9px 11px;border-radius:14px;background:#f3eeff;color:#382967;font-size:12px;line-height:1.65;overflow-wrap:anywhere;";
-      bubble.textContent = text;
+        const bubble = document.createElement("div");
+        bubble.className = "ai-assistant-bubble";
+        bubble.textContent = text;
 
-      wrapper.append(avatar, bubble);
-      row.style.cssText = "max-width:100%;margin-top:8px;";
-      row.appendChild(wrapper);
+        row.append(avatar, bubble);
     } else {
-      row.textContent = text;
+        row.className = "ngork-ai-message user";
+        row.textContent = text;
     }
 
     aiMessages.appendChild(row);
     aiMessages.scrollTop = aiMessages.scrollHeight;
+
     return row;
-  }
+}
+
 
   aiForm.addEventListener("submit", event => {
     event.preventDefault();

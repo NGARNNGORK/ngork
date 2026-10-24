@@ -2609,23 +2609,27 @@ textarea::placeholder {
   padding: 13px 11px;
   background: radial-gradient(ellipse at 100% 0%, #eee7ff65, transparent 48%), #fff;
 }
-.ai-welcome-row { display: flex; align-items: flex-start; gap: 8px; }
+.ai-welcome-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+}
+
 .ai-bot-avatar {
-  flex: 0 0 40px; width: 40px; height: 40px;
-  border-radius: 50%; overflow: hidden;
-  box-shadow: 0 3px 10px #7955d933, inset 0 0 0 2px #fff;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
 }
-.ai-bot-avatar svg { width: 100%; height: 100%; display: block; }
+
 .ai-welcome-message {
-  padding: 10px 12px;
-  border: 1px solid #eee7ff;
-  border-radius: 16px 16px 16px 5px;
-  background: linear-gradient(135deg, #f8f5ff, #f0eaff);
-  color: #382967;
-  font-size: 12px;
-  line-height: 1.65;
-  font-weight: 500;
+  flex: 1;
+  min-width: 0;
+  width: 0;
+  overflow-wrap: anywhere;
+  box-sizing: border-box;
 }
+
 .ai-welcome-message span { color: #f2a83b; }
 
 .ai-quick-actions {
@@ -2650,8 +2654,13 @@ textarea::placeholder {
   font-size: 12px; line-height: 1.65; overflow-wrap: anywhere;
 }
 .ngork-ai-message.assistant {
-  align-self: flex-start; color: #382967;
-  background: #f3eeff; border: 1px solid #e8deff;
+  align-self: flex-start;
+  width: fit-content;
+  max-width: calc(100% - 48px);
+  box-sizing: border-box;
+  color: #382967;
+  background: #f3eeff;
+  border: 1px solid #e8deff;
   border-bottom-left-radius: 5px;
 }
 .ngork-ai-message.user {
@@ -2814,4 +2823,53 @@ textarea::placeholder {
     height: min(355px, calc(100dvh - 76px));
     max-height: calc(100dvh - 76px);
   }
+}
+
+
+/* แยกรูปบอทออกจากกรอบข้อความ AI */
+.ai-reply-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 8px;
+    box-sizing: border-box;
+}
+
+.ai-reply-row .ai-bot-avatar {
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+}
+
+.ai-reply-row .ai-bot-avatar svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.ai-reply-row .ai-assistant-bubble {
+    flex: 0 1 auto;
+    width: fit-content;
+    max-width: calc(100% - 40px);
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+    padding: 9px 11px;
+    border-radius: 14px;
+    border-bottom-left-radius: 5px;
+    background: #f3eeff;
+    border: 1px solid #e8deff;
+    color: #382967;
+    font-size: 12px;
+    line-height: 1.65;
+}
+
+.ngork-ai-message.user {
+    display: table;
+    width: fit-content;
+    max-width: 88%;
+    margin: 8px 0 0 auto;
+    box-sizing: border-box;
 }
