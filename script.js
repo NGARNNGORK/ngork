@@ -545,9 +545,8 @@ if (aiToggle && aiPanel && aiClose && aiForm &&
     aiInput && aiMessages && aiSend) {
 
   aiToggle.addEventListener("click", () => {
-    aiPanel.hidden = false;
-    aiInput.focus();
-  });
+  aiPanel.hidden = false;
+});
 
   aiClose.addEventListener("click", () => {
     aiPanel.hidden = true;
@@ -601,10 +600,8 @@ aiForm.addEventListener("submit", (event) => {
     script.remove();
 
     loadingMessage.textContent = text;
-    aiSend.disabled = false;
-    aiInput.disabled = false;
-    aiInput.focus();
-  }
+aiSend.disabled = false;
+aiInput.disabled = false;
 
   window[callbackName] = (data) => {
     if (data && data.success && typeof data.answer === "string") {
