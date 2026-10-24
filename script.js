@@ -600,8 +600,10 @@ aiForm.addEventListener("submit", (event) => {
     script.remove();
 
     loadingMessage.textContent = text;
-aiSend.disabled = false;
-aiInput.disabled = false;
+    aiSend.disabled = false;
+    aiInput.disabled = false;
+    aiInput.focus();
+  }
 
   window[callbackName] = (data) => {
     if (data && data.success && typeof data.answer === "string") {
