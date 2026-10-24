@@ -2183,3 +2183,146 @@ textarea::placeholder {
   }
 }
 
+/* NGORK AI */
+.ngork-ai-toggle {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: #7558d9;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 24px #30205a30;
+}
+
+.ngork-ai-panel {
+  position: fixed;
+  right: 22px;
+  bottom: 84px;
+  z-index: 1001;
+  width: min(360px, calc(100vw - 32px));
+  height: 440px;
+  max-height: calc(100dvh - 120px);
+  overflow: hidden;
+  border: 1px solid #e8e4f5;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 12px 40px #21174730;
+  display: flex;
+  flex-direction: column;
+  color: #242039;
+}
+
+.ngork-ai-panel[hidden] {
+  display: none !important;
+}
+
+.ngork-ai-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  background: #7558d9;
+  color: #fff;
+}
+
+.ngork-ai-header strong,
+.ngork-ai-header small {
+  display: block;
+}
+
+.ngork-ai-header small {
+  margin-top: 4px;
+  opacity: .85;
+}
+
+.ngork-ai-header button {
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.ngork-ai-messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+}
+
+.ngork-ai-message {
+  max-width: 90%;
+  padding: 10px 12px;
+  border-radius: 13px;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.ngork-ai-message.assistant {
+  align-self: flex-start;
+  background: #f1edfc;
+}
+
+.ngork-ai-message.user {
+  align-self: flex-end;
+  background: #7558d9;
+  color: #fff;
+}
+
+.ngork-ai-form {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid #eeeaf5;
+}
+
+.ngork-ai-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #ddd7ef;
+  border-radius: 10px;
+  font: inherit;
+}
+
+.ngork-ai-form button {
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: #7558d9;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ngork-ai-form button:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+@media (max-width: 480px) {
+  .ngork-ai-toggle {
+    right: 14px;
+    bottom: 14px;
+  }
+
+  .ngork-ai-panel {
+    right: 12px;
+    bottom: 76px;
+    width: calc(100vw - 24px);
+  }
+}
+

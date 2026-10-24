@@ -528,7 +528,11 @@
    NGORK AI - Gemini Chat
    ========================= */
 
+
 const NGORK_AI_API_URL = "https://script.google.com/macros/s/AKfycbzK5tZF-sOOBLHZ0K9n7c1hA7oKDcd0jwJcx-Iyok2d63T9ehZJ0HyTpmgtSUA64ks6/exec";
+
+
+
 const aiToggle = document.getElementById("ngork-ai-toggle");
 const aiPanel = document.getElementById("ngork-ai-panel");
 const aiClose = document.getElementById("ngork-ai-close");
@@ -623,5 +627,6 @@ aiForm.addEventListener("submit", (event) => {
   });
 
   script.src = NGORK_AI_API_URL + "?" + params.toString();
-  document.body.appendChild(script);
+   document.body.appendChild(script);
 });
+}
