@@ -19,6 +19,114 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth
   let activeView = "dashboard";
   let toastTimer;
 
+  const NGORK_LINE_LIFF_ID = "2012358758-awHh5jWJ";
+  let lineConnectButton = null;
+  let liffSdkPromise = null;
+
+  function ensureLineConnectButton() {
+    if (lineConnectButton) return lineConnectButton;
+    const sidebar = document.querySelector("#sidebar");
+    const navItems = sidebar ? [...sidebar.querySelectorAll(".nav-item")] : [];
+    const lastNavItem = navItems[navItems.length - 1];
+    if (!lastNavItem) return null;
+    lineConnectButton = document.createElement("button");
+    lineConnectButton.type = "button";
+    lineConnectButton.className = "nav-item";
+    lineConnectButton.id = "connect-line-btn";
+    lineConnectButton.style.marginTop = "12px";
+    lineConnectButton.innerHTML = '<span aria-hidden="true">🔗</span><span>เชื่อม LINE</span>';
+    lineConnectButton.setAttribute("aria-label", "เชื่อมบัญชี LINE สำหรับรับการแจ้งเตือน");
+    lastNavItem.insertAdjacentElement("afterend", lineConnectButton);
+    lineConnectButton.addEventListener("click", handleLineConnectClick);
+    return lineConnectButton;
+  }
+
+  function loadLiffSdk() {
+    if (window.liff) return Promise.resolve(window.liff);
+    if (liffSdkPromise) return liffSdkPromise;
+    liffSdkPromise = new Promise((resolve, reject) => {
+      const sdk = document.createElement("script");
+      sdk.src = "https://static.line-scdn.net/liff/edge/2/sdk.js";
+      sdk.onload = () => resolve(window.liff);
+      sdk.onerror = () => reject(new Error("โหลดระบบเชื่อม LINE ไม่สำเร็จ"));
+      document.head.appendChild(sdk);
+    });
+    return liffSdkPromise;
+  }
+
+  async function postLineAccountAction(action, extra = {}) {
+    const firebaseUser = auth.currentUser;
+    if (!firebaseUser) throw new Error("กรุณาเข้าสู่ระบบ NGORK ก่อน");
+    const firebaseIdToken = await firebaseUser.getIdToken();
+    const response = await fetch(NGORK_SHEETS_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action, firebaseIdToken, ...extra })
+    });
+    const result = await response.json();
+    if (!result.success) throw new Error(result.error || "เชื่อมบัญชีไม่สำเร็จ");
+    return result;
+  }
+
+  async function refreshLineConnectButton() {
+    const button = ensureLineConnectButton();
+    if (!button || !auth.currentUser) return;
+    try {
+      const status = await postLineAccountAction("lineStatus");
+      button.dataset.linked = status.linked ? "true" : "false";
+      button.innerHTML = status.linked
+        ? '<span aria-hidden="true">✓</span><span>เชื่อม LINE แล้ว</span>'
+        : '<span aria-hidden="true">🔗</span><span>เชื่อม LINE</span>';
+    } catch (error) {
+      console.error("ตรวจสถานะ LINE ไม่สำเร็จ:", error);
+    }
+  }
+
+  async function connectLineAccount() {
+    const button = ensureLineConnectButton();
+    try {
+      if (button) button.disabled = true;
+      const liff = await loadLiffSdk();
+      await liff.init({ liffId: NGORK_LINE_LIFF_ID });
+      if (!liff.isLoggedIn()) {
+        sessionStorage.setItem("ngorkLineLinkPending", "1");
+        liff.login({ redirectUri: window.location.href });
+        return;
+      }
+      const lineIdToken = liff.getIDToken();
+      if (!lineIdToken) throw new Error("ไม่ได้รับ LINE ID token กรุณาอนุญาต openid ใน LIFF");
+      await postLineAccountAction("linkLine", { lineIdToken });
+      sessionStorage.removeItem("ngorkLineLinkPending");
+      showToast("เชื่อม LINE สำเร็จแล้ว");
+      await refreshLineConnectButton();
+    } catch (error) {
+      console.error("เชื่อม LINE ไม่สำเร็จ:", error);
+      showToast(error.message || "เชื่อม LINE ไม่สำเร็จ");
+    } finally {
+      if (button) button.disabled = false;
+    }
+  }
+
+  async function handleLineConnectClick() {
+    const button = ensureLineConnectButton();
+    if (button?.dataset.linked === "true") {
+      if (!confirm("ต้องการยกเลิกการเชื่อม LINE และหยุดรับการแจ้งเตือนหรือไม่?")) return;
+      try {
+        button.disabled = true;
+        await postLineAccountAction("unlinkLine");
+        button.dataset.linked = "false";
+        button.innerHTML = '<span aria-hidden="true">🔗</span><span>เชื่อม LINE</span>';
+        showToast("ยกเลิกการเชื่อม LINE แล้ว");
+      } catch (error) {
+        showToast(error.message || "ยกเลิกการเชื่อมไม่สำเร็จ");
+      } finally {
+        button.disabled = false;
+      }
+      return;
+    }
+    await connectLineAccount();
+  }
+
 
 
   function loadTasks() {
@@ -35,7 +143,7 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth
     }
   }
 
-  async function saveTasks() {
+  async function saveTasks(syncTask = null) {
     if (!userReady || !STORAGE_KEY || !auth.currentUser) return;
 
     // เก็บข้อมูลในเครื่องไว้เป็นข้อมูลสำรอง
@@ -52,6 +160,10 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth
           )
         )
       );
+      if (syncTask) {
+        const result = await sendTaskToSheets(syncTask, uid, "sync");
+        if (!result?.success) showToast("บันทึกบนเว็บแล้ว แต่ซิงก์ไป Google Sheets ไม่สำเร็จ");
+      }
     } catch (error) {
       console.error("บันทึกงานลง Firestore ไม่สำเร็จ:", error);
       showToast("บันทึกออนไลน์ไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ต");
@@ -68,6 +180,8 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth
     const localTasks = loadTasks();
     tasks = localTasks;
     render();
+
+    let firestoreLoaded = false;
 
     try {
       const tasksRef = collection(db, "users", uid, "tasks");
@@ -96,6 +210,7 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
       }
+      firestoreLoaded = true;
     } catch (error) {
       console.error("โหลดงานจาก Firestore ไม่สำเร็จ:", error);
       tasks = localTasks;
@@ -104,6 +219,15 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth
 
     userReady = true;
     render();
+
+    if (firestoreLoaded) {
+      const syncResults = await Promise.all(
+        tasks.map(task => sendTaskToSheets(task, uid, "sync"))
+      );
+      if (syncResults.some(result => !result?.success)) {
+        console.warn("มีงานบางรายการซิงก์ไป Google Sheets ไม่สำเร็จ");
+      }
+    }
   }
 
 
@@ -421,7 +545,7 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth
     if (!task) return;
     task.done = checked;
     task.updatedAt = Date.now();
-    saveTasks();
+    saveTasks(task);
     render();
     showToast(checked ? "ทำเครื่องหมายว่าเสร็จแล้ว ✓" : "ย้ายกลับไปงานที่ยังไม่เสร็จ");
   }
@@ -450,6 +574,11 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth
         doc(db, "users", uid, "tasks", id)
       );
 
+      const sheetsResult = await sendTaskToSheets(task, uid, "delete");
+      if (!sheetsResult?.success) {
+        showToast("ลบบนเว็บแล้ว แต่ลบสำเนาใน Google Sheets ไม่สำเร็จ");
+        return;
+      }
       showToast("ลบงานเรียบร้อยแล้ว");
     } catch (error) {
       console.error("ลบงานจาก Firestore ไม่สำเร็จ:", error);
@@ -482,15 +611,17 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth
     const date = $("#task-date").value;
     if (!title || !date) return;
     const editId = $("#task-form").dataset.editId;
+    let changedTask;
     if (editId) {
-      const task = tasks.find(t => t.id === editId);
-      if (task) Object.assign(task, { title, date, subject: $("#task-subject").value.trim(), note: $("#task-note").value.trim(), updatedAt: Date.now() });
+      changedTask = tasks.find(t => t.id === editId);
+      if (changedTask) Object.assign(changedTask, { title, date, subject: $("#task-subject").value.trim(), note: $("#task-note").value.trim(), updatedAt: Date.now() });
       showToast("บันทึกการแก้ไขแล้ว");
     } else {
-      tasks.push({ id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2), title, date, subject: $("#task-subject").value.trim(), note: $("#task-note").value.trim(), done: false, createdAt: Date.now() });
+      changedTask = { id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2), title, date, subject: $("#task-subject").value.trim(), note: $("#task-note").value.trim(), done: false, createdAt: Date.now() };
+      tasks.push(changedTask);
       showToast("เพิ่มงานใหม่เรียบร้อยแล้ว ✦");
     }
-    saveTasks();
+    saveTasks(changedTask);
     closeModal();
     render();
   });
@@ -511,11 +642,15 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth
   $("#sort-filter").addEventListener("change", renderList);
   $("#mobile-menu").addEventListener("click", () => $("#sidebar").classList.toggle("open"));
 
+  ensureLineConnectButton();
+
   window.addEventListener("ngork-user-ready", (event) => {
     const uid = event.detail?.uid;
     if (!uid) return;
 
     initializeUserTasks(uid);
+    refreshLineConnectButton();
+    if (sessionStorage.getItem("ngorkLineLinkPending") === "1") connectLineAccount();
   });
  
   setView("dashboard");
@@ -526,7 +661,37 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth
 
 
 const NGORK_AI_API_URL = "https://script.google.com/macros/s/AKfycbzK5tZF-sOOBLHZ0K9n7c1hA7oKDcd0jwJcx-Iyok2d63T9ehZJ0HyTpmgtSUA64ks6/exec";
+const NGORK_SHEETS_API_URL = NGORK_AI_API_URL;
 
+async function sendTaskToSheets(task, userId, action = "add") {
+  try {
+    const response = await fetch(NGORK_SHEETS_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action,
+        userId,
+        id: task.id,
+        title: task.title,
+        dueDate: task.date,
+        done: Boolean(task.done)
+      })
+    });
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error || "ส่งข้อมูลไป Google Sheets ไม่สำเร็จ");
+    }
+
+    return result;
+  } catch (error) {
+    console.error("ส่งสำเนางานไป Google Sheets ไม่สำเร็จ:", error);
+    return null;
+  }
+}
 
 
 function buildTaskContext() {
@@ -832,11 +997,42 @@ function addAIMessage(text, sender) {
     
 const taskContext = buildTaskContext();
 
+
+const today = localDate();
+
+const homeworkContext = {
+    today: today,
+    total: tasks.length,
+    completed: tasks.filter(task => task.done).length,
+    unfinished: tasks.filter(task => !task.done).length,
+    overdue: tasks.filter(task =>
+        !task.done && daysUntil(task.date) < 0
+    ).length,
+
+    subjects: [...new Set(
+        tasks.map(task => task.subject || "ไม่ระบุวิชา")
+    )],
+
+    tasks: tasks.slice(0, 60).map(task => ({
+        title: task.title || "",
+        subject: task.subject || "",
+        note: task.note || "",
+        dueDate: task.date || null,
+        daysLeft: daysUntil(task.date),
+        done: Boolean(task.done),
+        priority: task.done
+            ? "เสร็จแล้ว"
+            : getSmartPriority(task).label
+    }))
+};
+
 const params = new URLSearchParams({
-  callback: callbackName,
-  message,
-  context: JSON.stringify(taskContext)
+    callback: callbackName,
+    message: message,
+    context: JSON.stringify(homeworkContext)
 });
+
+script.src = NGORK_AI_API_URL + "?" + params.toString();
 
 
     script.src = NGORK_AI_API_URL + "?" + params.toString();
