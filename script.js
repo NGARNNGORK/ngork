@@ -94,9 +94,7 @@ async function connectLineAccount() {
     // ขั้นตอนที่ 1: Login ผ่าน LINE
     if (!liff.isLoggedIn()) {
       sessionStorage.setItem("ngorkLineLinkPending", "1");
-      liff.login({
-  redirectUri: window.location.href
-});
+      liff.login();
       return;
     }
 
