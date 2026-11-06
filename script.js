@@ -82,30 +82,50 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth
     }
   }
 
-  async function connectLineAccount() {
-    const button = ensureLineConnectButton();
-    try {
-      if (button) button.disabled = true;
-      const liff = await loadLiffSdk();
-      await liff.init({ liffId: NGORK_LINE_LIFF_ID });
-      if (!liff.isLoggedIn()) {
-        sessionStorage.setItem("ngorkLineLinkPending", "1");
-        liff.login({ redirectUri: window.location.href });
-        return;
-      }
-      const lineIdToken = liff.getIDToken();
-      if (!lineIdToken) throw new Error("ไม่ได้รับ LINE ID token กรุณาอนุญาต openid ใน LIFF");
-      await postLineAccountAction("linkLine", { lineIdToken });
-      sessionStorage.removeItem("ngorkLineLinkPending");
-      showToast("เชื่อม LINE สำเร็จแล้ว");
-      await refreshLineConnectButton();
-    } catch (error) {
-      console.error("เชื่อม LINE ไม่สำเร็จ:", error);
-      showToast(error.message || "เชื่อม LINE ไม่สำเร็จ");
-    } finally {
-      if (button) button.disabled = false;
+async function connectLineAccount() {
+  const button = ensureLineConnectButton();
+
+  try {
+    if (button) button.disabled = true;
+
+    const liff = await loadLiffSdk();
+    await liff.init({ liffId: NGORK_LINE_LIFF_ID });
+
+    // ขั้นตอนที่ 1: Login ผ่าน LINE
+    if (!liff.isLoggedIn()) {
+      sessionStorage.setItem("ngorkLineLinkPending", "1");
+      liff.login({
+  redirectUri: window.location.href
+});
+      return;
     }
+
+    // ขั้นตอนที่ 2: เชื่อมบัญชี LINE กับ NGORK
+    const lineIdToken = liff.getIDToken();
+
+    if (!lineIdToken) {
+      throw new Error("ไม่ได้รับ LINE ID token กรุณาตรวจสอบ openid");
+    }
+
+    await postLineAccountAction("linkLine", { lineIdToken });
+
+    sessionStorage.removeItem("ngorkLineLinkPending");
+
+    showToast("เชื่อมบัญชี LINE สำเร็จแล้ว");
+
+    await refreshLineConnectButton();
+
+    // ขั้นตอนที่ 3: เปิดหน้าเพิ่มเพื่อน NGORK
+    window.location.href = "https://line.me/R/ti/p/@400dagiu";
+
+  } catch (error) {
+    console.error("เชื่อม LINE ไม่สำเร็จ:", error);
+    showToast(error.message || "เชื่อม LINE ไม่สำเร็จ");
+  } finally {
+    if (button) button.disabled = false;
   }
+}
+
 
   async function handleLineConnectClick() {
     const button = ensureLineConnectButton();
