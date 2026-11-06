@@ -1168,6 +1168,13 @@ body {
       });
     }
   </script>
+  
+  <script>
+  // ตรวจว่ากลับมาจาก LINE Login หรือไม่
+  if (sessionStorage.getItem("ngorkLineLinkPending") === "1") {
+    window.location.replace("dashboard.html");
+  }
+</script>
 </body>
 </html>
 =======
