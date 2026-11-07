@@ -567,45 +567,42 @@ async function connectLineAccount() {
     render();
     showToast(checked ? "ทำเครื่องหมายว่าเสร็จแล้ว ✓" : "ย้ายกลับไปงานที่ยังไม่เสร็จ");
   }
-async function deleteTask(id) {
-  console.log("DELETE FUNCTION START:", id);
 
-  const task = tasks.find(t => t.id === id);
-  console.log("TASK FOUND:", task);
+  async function deleteTask(id) {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
 
-  if (!task) return;
+    if (!confirm(`ต้องการลบงาน “${task.title}” ใช่ไหม?`)) return;
 
-  const confirmed = confirm(`ต้องการลบงาน “${task.title}” ใช่ไหม?`);
-  console.log("CONFIRM RESULT:", confirmed);
+    tasks = tasks.filter(t => t.id !== id);
 
-  if (!confirmed) return;
+    // บันทึกการลบในเครื่องก่อน
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    render();
 
-  tasks = tasks.filter(t => t.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-  render();
+    try {
+      const uid = auth.currentUser?.uid;
 
-  try {
-    const uid = auth.currentUser?.uid;
-    if (!uid) throw new Error("ไม่พบผู้ใช้ที่เข้าสู่ระบบ");
+      if (!uid) {
+        throw new Error("ไม่พบผู้ใช้ที่เข้าสู่ระบบ");
+      }
 
-    await deleteDoc(doc(db, "users", uid, "tasks", id));
+      // ลบงานจาก Firestore ด้วย
+      await deleteDoc(
+        doc(db, "users", uid, "tasks", id)
+      );
 
-    console.log("FIRESTORE DELETE SUCCESS");
-
-    const sheetsResult = await sendTaskToSheets(task, uid, "delete");
-    console.log("SHEETS DELETE RESULT:", sheetsResult);
-
-    if (!sheetsResult?.success) {
-      showToast("ลบบนเว็บแล้ว แต่ลบสำเนาใน Google Sheets ไม่สำเร็จ");
-      return;
+      const sheetsResult = await sendTaskToSheets(task, uid, "delete");
+      if (!sheetsResult?.success) {
+        showToast("ลบบนเว็บแล้ว แต่ลบสำเนาใน Google Sheets ไม่สำเร็จ");
+        return;
+      }
+      showToast("ลบงานเรียบร้อยแล้ว");
+    } catch (error) {
+      console.error("ลบงานจาก Firestore ไม่สำเร็จ:", error);
+      showToast("ลบงานในเครื่องแล้ว แต่ลบออนไลน์ไม่สำเร็จ");
     }
-
-    showToast("ลบงานเรียบร้อยแล้ว");
-  } catch (error) {
-    console.error("DELETE ERROR:", error);
-    showToast("ลบงานในเครื่องแล้ว แต่ลบออนไลน์ไม่สำเร็จ");
   }
-}
 
   function editTask(id) {
     const task = tasks.find(t => t.id === id);
