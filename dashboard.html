@@ -287,5 +287,17 @@
   <input id="profile-photo-input" type="file" accept="image/*" hidden>
   <script type="module" src="script.js"></script>
   <script type="module" src="auth-guard.js"></script>
+  <div id="delete-modal" class="delete-modal">
+  <div class="delete-modal-card">
+    <h3>ยืนยันการลบงาน</h3>
+    <p>ต้องการลบงานนี้ใช่ไหม?</p>
+
+    <div class="delete-modal-actions">
+      <button type="button" data-cancel-delete>ยกเลิก</button>
+      <button type="button" class="confirm-delete"
+        data-confirm-delete>ลบงาน</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>

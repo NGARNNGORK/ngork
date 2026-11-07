@@ -568,41 +568,69 @@ async function connectLineAccount() {
     showToast(checked ? "ทำเครื่องหมายว่าเสร็จแล้ว ✓" : "ย้ายกลับไปงานที่ยังไม่เสร็จ");
   }
 
-  async function deleteTask(id) {
-    const task = tasks.find(t => t.id === id);
-    if (!task) return;
+  
+async function deleteTask(id) {
+  const task = tasks.find(t => t.id === id);
+  if (!task) return;
 
-    if (!confirm(`ต้องการลบงาน “${task.title}” ใช่ไหม?`)) return;
+  tasks = tasks.filter(t => t.id !== id);
 
-    tasks = tasks.filter(t => t.id !== id);
+  // บันทึกการลบในเครื่องก่อน
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  render();
 
-    // บันทึกการลบในเครื่องก่อน
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-    render();
+  try {
+    const uid = auth.currentUser?.uid;
 
-    try {
-      const uid = auth.currentUser?.uid;
-
-      if (!uid) {
-        throw new Error("ไม่พบผู้ใช้ที่เข้าสู่ระบบ");
-      }
-
-      // ลบงานจาก Firestore ด้วย
-      await deleteDoc(
-        doc(db, "users", uid, "tasks", id)
-      );
-
-      const sheetsResult = await sendTaskToSheets(task, uid, "delete");
-      if (!sheetsResult?.success) {
-        showToast("ลบบนเว็บแล้ว แต่ลบสำเนาใน Google Sheets ไม่สำเร็จ");
-        return;
-      }
-      showToast("ลบงานเรียบร้อยแล้ว");
-    } catch (error) {
-      console.error("ลบงานจาก Firestore ไม่สำเร็จ:", error);
-      showToast("ลบงานในเครื่องแล้ว แต่ลบออนไลน์ไม่สำเร็จ");
+    if (!uid) {
+      throw new Error("ไม่พบผู้ใช้ที่เข้าสู่ระบบ");
     }
+
+    // ลบงานจาก Firestore
+    await deleteDoc(
+      doc(db, "users", uid, "tasks", id)
+    );
+
+    const sheetsResult = await sendTaskToSheets(task, uid, "delete");
+
+    if (!sheetsResult?.success) {
+      showToast("ลบบนเว็บแล้ว แต่ลบสำเนาใน Google Sheets ไม่สำเร็จ");
+      return;
+    }
+
+    showToast("ลบงานเรียบร้อยแล้ว");
+  } catch (error) {
+    console.error("ลบงานจาก Firestore ไม่สำเร็จ:", error);
+    showToast("ลบงานในเครื่องแล้ว แต่ลบออนไลน์ไม่สำเร็จ");
   }
+}
+
+
+let pendingDeleteId = null;
+
+function openDeleteModal(id) {
+  pendingDeleteId = id;
+  document.getElementById("delete-modal").classList.add("show");
+}
+
+function closeDeleteModal() {
+  pendingDeleteId = null;
+  document.getElementById("delete-modal").classList.remove("show");
+}
+
+document.addEventListener("click", (e) => {
+  if (e.target.closest("[data-cancel-delete]")) {
+    closeDeleteModal();
+  }
+
+  if (e.target.closest("[data-confirm-delete]")) {
+    const id = pendingDeleteId;
+    closeDeleteModal();
+
+    if (id) deleteTask(id);
+  }
+});
+
 
   function editTask(id) {
     const task = tasks.find(t => t.id === id);
@@ -652,8 +680,7 @@ async function connectLineAccount() {
     const go = e.target.closest("[data-go]");
     if (edit) editTask(edit.dataset.edit);
     if (del) {
-  console.log("DELETE BUTTON CLICKED:", del.dataset.delete);
-  deleteTask(del.dataset.delete);
+  openDeleteModal(del.dataset.delete);
 }
     if (go) setView(go.dataset.go);
   });

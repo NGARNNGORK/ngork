@@ -3004,3 +3004,53 @@ textarea::placeholder {
 }
 
 
+.delete-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.45);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.delete-modal.show {
+  display: flex;
+}
+
+.delete-modal-card {
+  width: 100%;
+  max-width: 360px;
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 10px 35px rgba(0,0,0,.2);
+}
+
+.delete-modal-card h3 {
+  margin-top: 0;
+}
+
+.delete-modal-card p {
+  color: #666;
+}
+
+.delete-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.delete-modal-actions button {
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.confirm-delete {
+  background: #ed7058;
+  color: white;
+}
