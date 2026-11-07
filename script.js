@@ -596,6 +596,9 @@ async function deleteTask(id) {
       doc(db, "users", uid, "tasks", id)
     );
 
+    console.log("FIRESTORE DELETE SUCCESS:", id);
+console.log("TASKS LEFT:", tasks.length);
+
     const sheetsResult = await sendTaskToSheets(task, uid, "delete");
 
     if (!sheetsResult?.success) {
