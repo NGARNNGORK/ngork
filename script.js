@@ -582,6 +582,11 @@ async function deleteTask(id) {
   try {
     const uid = auth.currentUser?.uid;
 
+    console.log("DELETE CHECK:", {
+  taskId: id,
+  currentUserId: uid
+});
+
     if (!uid) {
       throw new Error("ไม่พบผู้ใช้ที่เข้าสู่ระบบ");
     }
