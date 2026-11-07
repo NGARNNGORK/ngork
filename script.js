@@ -651,7 +651,10 @@ async function connectLineAccount() {
     const del = e.target.closest("[data-delete]");
     const go = e.target.closest("[data-go]");
     if (edit) editTask(edit.dataset.edit);
-    if (del) deleteTask(del.dataset.delete);
+    if (del) {
+  console.log("DELETE BUTTON CLICKED:", del.dataset.delete);
+  deleteTask(del.dataset.delete);
+}
     if (go) setView(go.dataset.go);
   });
   $$(".nav-item").forEach(btn => btn.addEventListener("click", () => setView(btn.dataset.view)));
