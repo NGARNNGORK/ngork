@@ -10,6 +10,7 @@ import { signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 
   let STORAGE_KEY = null;
+  let hasInitializedFirestore = false;
 
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -188,25 +189,27 @@ async function connectLineAccount() {
     }
   }
 
-  async function initializeUserTasks(uid) {
-    if (!uid) return;
+  
+async function initializeUserTasks(uid) {
+  if (!uid) return;
 
-    userReady = false;
-    STORAGE_KEY = `ngork_tasks_v1_${uid}`;
+  userReady = false;
+  STORAGE_KEY = `ngork_tasks_v1_${uid}`;
 
-    // โหลดงานเดิมจากเครื่องก่อน
-    const localTasks = loadTasks();
-    tasks = localTasks;
-    render();
+  const INIT_KEY = `ngork_firestore_initialized_${uid}`;
+  const wasInitialized = localStorage.getItem(INIT_KEY) === "true";
 
-    let firestoreLoaded = false;
+  const localTasks = loadTasks();
+  tasks = localTasks;
+  render();
 
-    try {
-      const tasksRef = collection(db, "users", uid, "tasks");
-      const snapshot = await getDocs(tasksRef);
+  try {
+    const tasksRef = collection(db, "users", uid, "tasks");
+    const snapshot = await getDocs(tasksRef);
 
-      if (snapshot.empty) {
-        // ถ้าบัญชีนี้ยังไม่มีงานออนไลน์ ให้นำงานเดิมขึ้นไปเก็บ
+    if (snapshot.empty) {
+      if (!wasInitialized) {
+        // ใช้ข้อมูลงานในเครื่องเฉพาะการเริ่มต้นครั้งแรก
         tasks = localTasks;
 
         if (localTasks.length > 0) {
@@ -220,33 +223,35 @@ async function connectLineAccount() {
           );
         }
       } else {
-        // ถ้ามีงานออนไลน์แล้ว ให้ใช้ข้อมูลออนไลน์เป็นหลัก
-        tasks = snapshot.docs.map(item => ({
-          ...item.data(),
-          id: item.id
-        }));
-
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+        // เคยเริ่มใช้งานแล้วและ Firestore ว่าง ให้คงเป็น 0 งาน
+        tasks = [];
       }
-      firestoreLoaded = true;
-    } catch (error) {
-      console.error("โหลดงานจาก Firestore ไม่สำเร็จ:", error);
-      tasks = localTasks;
-      showToast("โหลดงานออนไลน์ไม่สำเร็จ กำลังแสดงข้อมูลงานในเครื่อง");
+    } else {
+      tasks = snapshot.docs.map(item => ({
+        ...item.data(),
+        id: item.id
+      }));
     }
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    localStorage.setItem(INIT_KEY, "true");
 
     userReady = true;
     render();
 
-    if (firestoreLoaded) {
-      const syncResults = await Promise.all(
-        tasks.map(task => sendTaskToSheets(task, uid, "sync"))
-      );
-      if (syncResults.some(result => !result?.success)) {
-        console.warn("มีงานบางรายการซิงก์ไป Google Sheets ไม่สำเร็จ");
-      }
-    }
+    await Promise.all(
+      tasks.map(task => sendTaskToSheets(task, uid, "sync"))
+    );
+
+  } catch (error) {
+    console.error("โหลดงานจาก Firestore ไม่สำเร็จ:", error);
+    tasks = localTasks;
+    userReady = true;
+    render();
+    showToast("โหลดงานออนไลน์ไม่สำเร็จ กำลังแสดงข้อมูลงานในเครื่อง");
   }
+}
+
 
 
 
